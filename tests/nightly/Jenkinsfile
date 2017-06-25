@@ -1,0 +1,29 @@
+node("gpu") {
+
+    currentBuild.result = "SUCCESS"
+    try {
+       stage('Checkout'){
+          checkout scm
+       }
+
+       stage('Build Docker'){
+            sh 'docker/tool.sh build python cpu'
+       }
+
+       stage('Test Docker'){
+            sh 'docker/tool.sh test python cpu'
+       }
+    }
+    catch (err) {
+
+        currentBuild.result = "FAILURE"
+
+            mail body: "project build error is here: ${env.BUILD_URL}" ,
+            from: 'mxnet-ci@amazon.com',
+            replyTo: 'mxnet-ci@amazon.com',
+            subject: 'project build failed',
+            to: 'lynguyen@amazon.com'
+
+        throw err
+    }
+}

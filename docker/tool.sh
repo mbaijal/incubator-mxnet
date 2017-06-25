@@ -5,7 +5,7 @@
 # Suffixes tag with the version if the commit is a release
 #
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
+HASH=$(git rev-parse HEAD)
 function show_usage() {
     echo ""
     echo "Usage: $(basename $0) COMMAND LANGUAGE DEVICE HASH"
@@ -18,7 +18,7 @@ function show_usage() {
     echo ""
 }
 
-if (( $# < 4 )); then
+if (( $# < 3 )); then
     show_usage
     exit -1
 fi
@@ -29,7 +29,7 @@ LANGUAGE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
 DEVICE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
-RELEASE_TAG=$(basename $(git describe --all --exact-match $( echo "$1" | tr '[:upper:]' '[:lower:]' )) | sed 's/^v//')
+RELEASE_TAG=$(basename $(git describe --all --exact-match $( echo "$HASH" | tr '[:upper:]' '[:lower:]' )) | sed 's/^v//')
 shift 1
 
 DOCKERFILE_LIB="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${DEVICE}"
@@ -92,6 +92,7 @@ if [[ "${COMMAND}" == "build" ]]; then
         ${DOCKER_BINARY} tag ${DOCKER_TAG} ${DOCKER_TAG_VERSIONED}
     fi
 elif [[ "${COMMAND}" == "test" ]]; then
+    set -e
     if [[ "${LANGUAGE}" == "python" ]]; then
         if [[ "${DEVICE}" == *"gpu"* ]]; then
             ${DOCKER_BINARY} run --rm -w /mxnet mxnet/python:gpu bash -c "python tests/python/train/test_conv.py --gpu"
@@ -137,6 +138,7 @@ elif [[ "${COMMAND}" == "test" ]]; then
         ${DOCKER_BINARY} run -w /mxnet --rm mxnet/julia:gpu bash -c "perl perl-package/AI-MXNet/examples/mnist.pl"
         exit
     fi
+    set +e
 
     echo "No tests for language ${LANGUAGE}"
     show_usage
