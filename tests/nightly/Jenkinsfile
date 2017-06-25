@@ -7,11 +7,11 @@ node("gpu") {
        }
 
        stage('Build Docker'){
-            sh 'docker/tool.sh build python cpu'
+            sh 'cd docker && ./tool.sh build python cpu'
        }
 
        stage('Test Docker'){
-            sh 'docker/tool.sh test python cpu'
+            sh 'cd docker && ./tool.sh test python cpu'
        }
     }
     catch (err) {
