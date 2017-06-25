@@ -1,9 +1,3 @@
-args = commandArgs(trailingOnly=TRUE)
-use.gpu <- FALSE
-if (length(args)>=1 && args[1] == "--gpu") {
-  use.gpu <- TRUE
-}
-
 list.of.packages <- c("R.utils")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
@@ -60,16 +54,9 @@ dtest = mx.io.MNISTIter(
   silent=0)
 
 mx.set.seed(0)
-devices <- lapply(1:2, function(i) {
+devices = lapply(1:2, function(i) {
   mx.cpu(i)
 })
-
-if (isTRUE(use.gpu)) {
-  devices <- lapply(1:2, function(i) {
-    mx.gpu(i)
-  })
-  print(paste0("Using GPU"))
-}
 
 # create the model
 model <- mx.model.FeedForward.create(softmax, X=dtrain, eval.data=dtest,

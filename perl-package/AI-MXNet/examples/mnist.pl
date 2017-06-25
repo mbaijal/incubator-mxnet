@@ -6,6 +6,21 @@ use LWP::UserAgent ();
 use PDL ();
 #use Gtk2 '-init';
 use AI::MXNet ('mx');
+use AI::MXNet::Function::Parameters;
+use Getopt::Long qw(HelpMessage);
+
+GetOptions(
+    'gpus=s'         => \(my $gpus                   ),
+    'help'           => sub { HelpMessage(0) },
+) or HelpMessage(1);
+
+=head1 NAME
+
+    mnist.pl - Example of training digit recognition on MNIST dataset
+
+=head1 SYNOPSIS
+
+    --gpus           list of gpus to run, e.g. 0 or 0,2,5. empty means using cpu.
 
 my $ua = LWP::UserAgent->new();
 
@@ -166,12 +181,23 @@ sub nn_conv {
 
 my $mlp = $ARGV[0] ? nn_conv($data) : nn_fc($data);
 
+my $contexts;
+if(defined $gpus)
+{
+    $contexts = [map { mx->gpu($_) } split(/,/, $gpus)];
+}
+else
+{
+    $contexts = mx->cpu(0);
+}
+
 #We visualize the network structure with output size (the batch_size is ignored.)
 #my $shape = { data => [ $batch_size, 1, 28, 28 ] };
 #show_network(mx->viz->plot_network($mlp, shape => $shape));
 
 my $model = mx->mod->Module(
     symbol => $mlp,       # network structure
+    context             => $contexts
 );
 $model->fit(
     $train_iter,       # training data
