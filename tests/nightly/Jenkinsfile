@@ -8,8 +8,11 @@ node("gpu") {
           checkout scm
        }
 
+
        stage('Build Docker'){
+       docker.withRegistry('https://registry.hub.docker.com', 'DockerHub'){
             sh 'cd docker && ./run.sh'
+       }
        }
 
     }
