@@ -1,5 +1,7 @@
 node("gpu") {
 
+    echo "testing mbaijal's build"
+
     currentBuild.result = "SUCCESS"
     try {
        stage('Checkout'){
