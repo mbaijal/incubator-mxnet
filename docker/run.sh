@@ -4,10 +4,13 @@
 
 HASH=$(git rev-parse HEAD)
 TAG=$(basename $(git describe --all --exact-match ${HASH}))
+RELEASE_TAG=$(basename $(git describe --all --exact-match $( echo "$HASH" | tr '[:upper:]' '[:lower:]' )) | sed 's/^v//')
 
 echo "HASH: $HASH"
 echo "TAG: $TAG"
 echo "IS_PUBLISH: $IS_PUBLISH"
+echo "RELEASE_TAG: $RELEASE_TAG"
+
 
 DEVICES=('cpu')
 LANGUAGES=('python')
