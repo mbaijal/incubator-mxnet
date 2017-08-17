@@ -4,7 +4,7 @@
 
 HASH=$(git rev-parse HEAD)
 TAG=$(basename $(git describe --all --exact-match ${HASH}))
-RELEASE_TAG=$(basename $(git describe --all --exact-match $( echo "$HASH" | tr '[:upper:]' '[:lower:]' )) | sed 's/^v//')
+RELEASE_TAG=$(basename $(git tag -l --contains ${HASH}))
 
 echo "HASH: $HASH"
 echo "TAG: $TAG"
