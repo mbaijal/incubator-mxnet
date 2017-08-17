@@ -7,6 +7,7 @@ TAG=$(basename $(git describe --all --exact-match ${HASH}))
 
 echo "HASH: $HASH"
 echo "TAG: $TAG"
+echo "IS_PUBLISH: $IS_PUBLISH"
 
 DEVICES=('cpu')
 LANGUAGES=('python')
@@ -16,6 +17,7 @@ for DEV in "${DEVICES[@]}"; do
         ./tool.sh test ${LANG} ${DEV} ${HASH}
         if [[ -n "$TAG" && "$IS_PUBLISH" == true ]]; then
             # Push if triggered by tagging event and IS_PUBLISH is set
+            echo "Pushing to DockerHub"
             ./tool.sh push ${LANG} ${DEV} ${HASH}
         fi
     done

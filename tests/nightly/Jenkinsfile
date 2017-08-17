@@ -21,7 +21,7 @@ node("gpu") {
             from: 'mxnet-ci@amazon.com',
             replyTo: 'mxnet-ci@amazon.com',
             subject: 'project build failed',
-            to: 'lynguyen@amazon.com'
+            to: 'mbaijal@amazon.com'
 
         throw err
     }
