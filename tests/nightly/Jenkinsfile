@@ -1,6 +1,6 @@
 node("gpu") {
 
-    echo "testing mbaijal's build"
+    echo "testing the change to docker run.sh"
 
     currentBuild.result = "SUCCESS"
     try {
@@ -9,12 +9,9 @@ node("gpu") {
        }
 
        stage('Build Docker'){
-            sh 'cd docker && ./tool.sh build python cpu'
+            sh 'cd docker && ./run.sh'
        }
 
-       stage('Test Docker'){
-            sh 'cd docker && ./tool.sh test python cpu'
-       }
     }
     catch (err) {
 
