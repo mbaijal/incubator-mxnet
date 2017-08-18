@@ -54,7 +54,7 @@ else
 fi
 
 # set docker tags
-DOCKER_TAG="mbaijal/${LANGUAGE}"
+DOCKER_TAG="${DOCKER_REPO}/${LANGUAGE}"
 if [[ "${DEVICE}" != 'cpu' ]]; then
     DOCKER_TAG="${DOCKER_TAG}:${DEVICE}"
     if [[ -n "${RELEASE_TAG}" ]]; then
