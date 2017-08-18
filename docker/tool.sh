@@ -54,7 +54,7 @@ else
 fi
 
 # set docker tags
-DOCKER_TAG="mxnet/${LANGUAGE}"
+DOCKER_TAG="mbaijal/${LANGUAGE}"
 if [[ "${DEVICE}" != 'cpu' ]]; then
     DOCKER_TAG="${DOCKER_TAG}:${DEVICE}"
     if [[ -n "${RELEASE_TAG}" ]]; then
