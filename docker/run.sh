@@ -20,7 +20,7 @@ for DEV in "${DEVICES[@]}"; do
         ./tool.sh test ${LANG} ${DEV} ${HASH}
         if [[ -n "$TAG" && "$IS_PUBLISH" == true ]]; then
             # Push if triggered by tagging event and IS_PUBLISH is set
-            echo "Alert! Pushing to DockerHub"
+            echo "Alert! Pushing to DockerHub, using account mbaijal!"
             ./tool.sh push ${LANG} ${DEV} ${HASH}
         fi
     done
