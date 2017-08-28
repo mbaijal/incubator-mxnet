@@ -145,7 +145,7 @@ elif [[ "${COMMAND}" == "test" ]]; then
     show_usage
     exit 1
 elif [[ "${COMMAND}" == "push" ]]; then
-    ${DOCKER_BINARY} push ${DOCKER_TAG}
+    ${DOCKER_BINARY} push ${DOCKER_TAG_VERSIONED}   #change this back after testing
     if [[ -n "${DOCKER_TAG_VERSIONED}" ]]; then
         ${DOCKER_BINARY} push ${DOCKER_TAG_VERSIONED}
     fi
