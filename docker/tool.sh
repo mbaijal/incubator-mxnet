@@ -98,7 +98,7 @@ if [[ "${COMMAND}" == "build" ]]; then
     rm -rf ${DOCKERFILE}
     cp ${DOCKERFILE_LIB} ${DOCKERFILE}
     # checkout the release tag
-    sed -i "/cd mxnet/ s/$/\n\tgit checkout tags\/${RELEASE_TAG} -b ${RELEASE_TAG} \&\& \\\/" ${DOCKERFILE}
+    sed -i "/cd mxnet/ s/$/\n\tgit checkout tags\/${RELEASE_TAG} -b ${RELEASE_TAG} \&\& git submodule update --recursive \&\& \\\/" ${DOCKERFILE}
     cat ${DOCKERFILE_LANG} >>${DOCKERFILE}
     # To remove the following error caused by opencv
     #    libdc1394 error: Failed to initialize libdc1394"
