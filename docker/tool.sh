@@ -30,7 +30,7 @@ shift 1
 DEVICE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
 #RELEASE_TAG=$(basename $(git describe --all --exact-match $( echo "$HASH" | tr '[:upper:]' '[:lower:]' )) | sed 's/^v//')
-RELEASE_TAG=${IMAGE_TAG}
+RELEASE_TAG=${GIT_RELEASE_TAG}
 shift 1
 
 DOCKERFILE_LIB="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${DEVICE}"
@@ -78,7 +78,7 @@ if [[ "${COMMAND}" == "build" ]]; then
     rm -rf ${DOCKERFILE}
     cp ${DOCKERFILE_LIB} ${DOCKERFILE}
     # checkout the release tag
-    sed -i "/git clone/ s/$/\n\tgit checkout tags\/${RELEASE_TAG} -b ${RELEASE_TAG} \&\& \\\/" ${DOCKERFILE}
+    sed -i "/cd mxnet/ s/$/\n\tgit checkout tags\/${RELEASE_TAG} -b ${RELEASE_TAG} \&\& \\\/" ${DOCKERFILE}
     cat ${DOCKERFILE_LANG} >>${DOCKERFILE}
     # To remove the following error caused by opencv
     #    libdc1394 error: Failed to initialize libdc1394"
@@ -145,7 +145,7 @@ elif [[ "${COMMAND}" == "test" ]]; then
     show_usage
     exit 1
 elif [[ "${COMMAND}" == "push" ]]; then
-    ${DOCKER_BINARY} push ${DOCKER_TAG_VERSIONED}   #change this back after testing
+    ${DOCKER_BINARY} push ${DOCKER_TAG}
     if [[ -n "${DOCKER_TAG_VERSIONED}" ]]; then
         ${DOCKER_BINARY} push ${DOCKER_TAG_VERSIONED}
     fi
