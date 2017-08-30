@@ -1,8 +1,24 @@
 #!/usr/bin/env bash
+
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
 #
-# Script to build, test and push docker images
-# Tags the images with the language and device
-# Suffixes tag with the version if the commit is a release
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+#
+# Script to build, test and push a docker container
 #
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HASH=$(git rev-parse HEAD)
@@ -82,7 +98,7 @@ if [[ "${COMMAND}" == "build" ]]; then
     rm -rf ${DOCKERFILE}
     cp ${DOCKERFILE_LIB} ${DOCKERFILE}
     # checkout the release tag
-    sed -i "/cd mxnet/ s/$/\n\tgit checkout tags\/${RELEASE_TAG} -b ${RELEASE_TAG} \&\& \\\/" ${DOCKERFILE}
+    sed -i "/cd mxnet/ s/$/\n\tgit checkout tags\/${RELEASE_TAG} -b ${RELEASE_TAG} \&\& git submodule update --recursive \&\& \\\/" ${DOCKERFILE}
     cat ${DOCKERFILE_LANG} >>${DOCKERFILE}
     # To remove the following error caused by opencv
     #    libdc1394 error: Failed to initialize libdc1394"
