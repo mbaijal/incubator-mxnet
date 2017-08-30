@@ -34,7 +34,7 @@ shift 1
 #Only for the release, change back to variable post release. Meghna update to 0.11.0 (correct tag)
 #Change Repo to mxnet for release and variable post release
 RELEASE_TAG='0.11.0.rc3'
-DOCKER_REPO='mbaijal'
+DOCKER_REPO='mxnet'
 shift 1
 
 DOCKERFILE_LIB="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${DEVICE}"
