@@ -46,11 +46,11 @@ shift 1
 DEVICE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
 #RELEASE_TAG=$(basename $(git describe --all --exact-match $( echo "$HASH" | tr '[:upper:]' '[:lower:]' )) | sed 's/^v//')
-#RELEASE_TAG=${GIT_RELEASE_TAG}
+RELEASE_TAG=${GIT_RELEASE_TAG}
 #Only for the release, change back to variable post release. Meghna update to 0.11.0 (correct tag)
 #Change Repo to mxnet for release and variable post release
-RELEASE_TAG='0.11.0.rc3'
-DOCKER_REPO='mbaijal'
+#RELEASE_TAG='0.11.0.rc3'
+#DOCKER_REPO='mbaijal'
 shift 1
 
 DOCKERFILE_LIB="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${DEVICE}"
