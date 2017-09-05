@@ -15,7 +15,7 @@ echo "RELEASE_TAG: $RELEASE_TAG"
 
 
 DEVICES=('cpu' 'gpu')
-LANGUAGES=('python' 'julia' 'scala' 'perl')
+LANGUAGES=('python' 'julia' 'r-lang' 'scala' 'perl')
 for DEV in "${DEVICES[@]}"; do
     for LANG in "${LANGUAGES[@]}"; do
         ./tool.sh build ${LANG} ${DEV} ${HASH}
