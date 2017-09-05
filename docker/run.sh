@@ -6,7 +6,7 @@ HASH=$(git rev-parse HEAD)
 TAG=$(basename $(git describe --all --exact-match ${HASH}))
 RELEASE_TAG=$(basename $(git tag -l --contains ${HASH}))
 #only for release, meghna, update back to variable
-#IS_PUBLISH=false
+IS_PUBLISH=false
 
 echo "HASH: $HASH"
 echo "TAG: $TAG"
