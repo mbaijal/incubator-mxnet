@@ -19,8 +19,8 @@
 
 # Build and push all docker containers
 
-DEVICES=('cpu' 'gpu')
-LANGUAGES=('python' 'julia' 'r-lang' 'scala' 'perl')
+DEVICES=('gpu')
+LANGUAGES=('python')
 for DEV in "${DEVICES[@]}"; do
     for LANG in "${LANGUAGES[@]}"; do
         ./tool.sh build ${LANG} ${DEV}
