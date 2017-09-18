@@ -1,6 +1,4 @@
-properties{
-cancelOutdatedJobs(true)
-}
+properties()
 
 node("Docker_Host_Ubuntu") {
 
