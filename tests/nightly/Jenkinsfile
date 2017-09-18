@@ -1,3 +1,6 @@
+triggers{
+cancelOutdatedJobs:true
+}
 node("Docker_Host_Ubuntu") {
 
     echo "testing the change to docker run.sh"
