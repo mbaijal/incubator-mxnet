@@ -11,6 +11,12 @@ max_time = 120
 // assign any caught errors here
 err = null
 
+properties([
+    pipelineTriggers([
+        commentTrigger:'Build Now'
+    ])
+])
+
 // initialize source codes
 def init_git() {
   retry(5) {
@@ -18,10 +24,12 @@ def init_git() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         sh 'git submodule update --init'
+        sh 'git clean -d -f'        
       }
     } catch (exc) {
       deleteDir()
       error "Failed to fetch source codes"
+      sleep 2
     }
   }
 }
@@ -32,10 +40,12 @@ def init_git_win() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         bat 'git submodule update --init'
+        bat 'git clean -d -f'        
       }
     } catch (exc) {
       deleteDir()
       error "Failed to fetch source codes"
+      sleep 2
     }
   }
 }
@@ -207,6 +217,7 @@ try {
             withEnv(['OpenBLAS_HOME=C:\\mxnet\\openblas', 'OpenCV_DIR=C:\\mxnet\\opencv_vc14', 'CUDA_PATH=C:\\CUDA\\v8.0']) {
               init_git_win()
               bat """mkdir build_vc14_cpu
+    call "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\x86_amd64\\vcvarsx86_amd64.bat"
     cd build_vc14_cpu
     cmake -G \"Visual Studio 14 2015 Win64\" -DUSE_CUDA=0 -DUSE_CUDNN=0 -DUSE_NVRTC=0 -DUSE_OPENCV=1 -DUSE_OPENMP=1 -DUSE_PROFILER=1 -DUSE_BLAS=open -DUSE_LAPACK=1 -DUSE_DIST_KVSTORE=0 ${env.WORKSPACE}"""
               bat 'C:\\mxnet\\build_vc14_cpu.bat'
