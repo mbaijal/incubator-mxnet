@@ -12,9 +12,9 @@ max_time = 120
 err = null
 
 properties([
-    GhprbTriggers([
+    GhprbTriggers(
         triggerPhrase:'Build Now'
-    ])
+    )
 ])
 
 // initialize source codes
