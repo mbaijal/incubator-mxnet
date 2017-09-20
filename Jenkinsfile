@@ -1,7 +1,7 @@
 // -*- mode: groovy -*-
 // Jenkins pipeline
 // See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
-import org.jenkinsci.plugins.ghprb.GhprbTrigger
+
 // mxnet libraries
 mx_lib = 'lib/libmxnet.so, lib/libmxnet.a, dmlc-core/libdmlc.a, nnvm/lib/libnnvm.a'
 // command to start a docker container
@@ -12,9 +12,9 @@ max_time = 120
 err = null
 
 properties([
-
-    triggerPhrase:'Build Now'
-
+  pipelineTriggers([
+    issueCommentTrigger('.*test this please.*')
+  ])
 ])
 
 // initialize source codes
