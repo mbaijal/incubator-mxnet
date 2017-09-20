@@ -12,10 +12,7 @@ max_time = 120
 err = null
 
 properties([
-    pipelineTriggers([
-        cron:'H/5 * * * *',
-        cancelOutdatedJobs:true,
-        commentTrigger:'Build Now',
+    GhprbTriggers([
         triggerPhrase:'Build Now'
     ])
 ])
