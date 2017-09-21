@@ -20,10 +20,11 @@ properties([
 
 def cause = currentBuild.rawBuild.getCauses()
 echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
+def causeString = cause[0].toString()
 
-if (cause[0].contains('IssueCommentCause')){
+if (causeString.contains('IssueCommentCause')){
 echo "A Github comment triggered this build!"
-} else if (cause[0].contains('BranchEventCause')){
+} else if (causeString.contains('BranchEventCause')){
 echo "Branch Event Cause!"
 } else {
 echo "Some other cause....push/new PR?"
