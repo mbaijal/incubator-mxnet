@@ -48,16 +48,15 @@ def smokeTest_Sanity()
 {
     try {
 
-          timeout(time: max_time, unit: 'MINUTES') {
-            node('mxnetlinux') {
+
               ws('workspace/sanity') {
                 init_git()
                 sh "python tools/license_header.py check"
                 make('lint', 'cpplint rcpplint jnilint')
                 make('lint', 'pylint')
               }
-            }
-          }
+
+
 
 
       // set build status to success at the end
