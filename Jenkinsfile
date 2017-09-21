@@ -18,10 +18,11 @@ properties([
     ])
 
 @NonCPS
-def checkTrigger() {
-def cause = currentBuild.rawBuild.getCauses()
-def causeString = cause[0].toString()
-echo "Branch is ${env.BRANCH_NAME} and cause is ${causeString}"
+Boolean checkTrigger() {
+    def cause = currentBuild.rawBuild.getCauses()
+    def causeString = cause[0].toString()
+    echo "Branch is ${env.BRANCH_NAME} and cause is ${causeString}"
+    def isComment = causeString.contains('IssueCommentCause')
 }
 
 
@@ -114,6 +115,11 @@ def python3_gpu_ut(docker_type) {
   }
 }
 
+if (!checkTrigger()) {
+    echo "Run Smoke Test and wait for Github Review Comment"
+}
+
+if (checkTrigger()){
 try {
     stage("Sanity Check") {
       timeout(time: max_time, unit: 'MINUTES') {
@@ -413,4 +419,5 @@ try {
             throw err
         }
     }
+}
 }
