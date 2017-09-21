@@ -12,14 +12,36 @@ max_time = 120
 err = null
 
 
-echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID}"
-
 properties([
   pipelineTriggers([
     issueCommentTrigger('.*test this please.*')
   ])
 ])
 
+def cause = currentBuild.rawBuild.getCause(hudson.model.Cause$UserIdCause)
+echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
+
+
+def abortPreviousRunningBuilds() {
+  def hi = Hudson.instance
+  def pname = env.JOB_NAME.split('/')[0]
+
+  hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+    def exec = build.getExecutor()
+
+    if (build.number != currentBuild.number && exec != null) {
+      exec.interrupt(
+        Result.ABORTED,
+        new CauseOfInterruption.UserInterruption(
+          "Aborted by #${currentBuild.number}"
+        )
+      )
+      println("Aborted previous running build #${build.number}")
+    } else {
+      println("Build is not running or is current build, not aborting - #${build.number}")
+    }
+  }
+}
 
 // initialize source codes
 def init_git() {
