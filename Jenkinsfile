@@ -141,13 +141,14 @@ if (causeString.contains('BranchEventCause')){
     echo "PR Event!"
     try {
         stage("Smoke Test") {
-          timeout(time: max_time, unit: 'MINUTES') {
             node('mxnetlinux') {
-              ws('workspace/sanity') {
-                init_git()
-                sh "python tools/license_header.py check"
-                make('lint', 'cpplint rcpplint jnilint')
-                make('lint', 'pylint')
+                timeout(time: max_time, unit: 'MINUTES') {
+
+                  ws('workspace/sanity') {
+                    init_git()
+                    sh "python tools/license_header.py check"
+                    make('lint', 'cpplint rcpplint jnilint')
+                    make('lint', 'pylint')
               }
             }
           }
@@ -174,7 +175,7 @@ if (causeString.contains('BranchEventCause')){
     }
 }
 
-else if (causeString.contains('IssueCommentCause')){
+if (causeString.contains('IssueCommentCause')){
     echo "A Github comment triggered this build!"
 
     try {
