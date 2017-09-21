@@ -16,7 +16,7 @@ echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID}"
 
 properties([
   pipelineTriggers([
-    cron:'H/5 * * * *'
+    issueCommentTrigger('.*test this please.*')
   ])
 ])
 
