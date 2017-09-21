@@ -13,7 +13,7 @@ err = null
 
 properties([
   pipelineTriggers([
-    issueCommentTrigger('.*test this please.*')
+    cron:'H/5 * * * *'
   ])
 ])
 
@@ -116,6 +116,7 @@ try {
             sh "python tools/license_header.py check"
             make('lint', 'cpplint rcpplint jnilint')
             make('lint', 'pylint')
+            pullRequest.addLabel('Build Passing')
           }
         }
       }
