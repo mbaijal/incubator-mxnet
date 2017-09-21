@@ -18,17 +18,6 @@ properties([
   ])
 ])
 
-def cause = currentBuild.rawBuild.getCauses()
-echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
-def causeString = cause[0].toString()
-
-if (causeString.contains('IssueCommentCause')){
-echo "A Github comment triggered this build!"
-} else if (causeString.contains('BranchEventCause')){
-echo "Branch Event Cause!"
-} else {
-echo "Some other cause....push/new PR?"
-}
 
 def abortPreviousRunningBuilds() {
   def hi = Hudson.instance
@@ -140,6 +129,22 @@ def python3_gpu_ut(docker_type) {
     sh "${docker_run} ${docker_type} PYTHONPATH=./python/ nosetests-3.4 --with-timer --verbose tests/python/gpu"
   }
 }
+
+// ---------------------xxxxxxxxxxxxx---------------------
+
+def cause = currentBuild.rawBuild.getCauses()
+echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
+def causeString = cause[0].toString()
+
+
+if (causeString.contains('BranchEventCause')){
+    echo "PR Event!"
+    def runSmokeTest = load "SmokeTest.Groovy"
+    runSmokeTest.smokeTest_Sanity()
+}
+
+if (causeString.contains('IssueCommentCause')){
+echo "A Github comment triggered this build!"
 
 try {
     stage("Sanity Check") {
@@ -439,4 +444,10 @@ try {
             throw err
         }
     }
+}
+}
+//second if ends here
+
+else {
+echo "Some other cause....push/new PR?"
 }
