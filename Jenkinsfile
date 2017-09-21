@@ -140,19 +140,20 @@ def causeString = cause[0].toString()
 if (causeString.contains('BranchEventCause')){
     echo "PR Event!"
     try {
-    stage("Smoke Test") {
-      timeout(time: max_time, unit: 'MINUTES') {
-        node('mxnetlinux') {
-          ws('workspace/sanity') {
-            init_git()
-            sh "python tools/license_header.py check"
-            make('lint', 'cpplint rcpplint jnilint')
-            make('lint', 'pylint')
+        stage("Sanity Check") {
+          timeout(time: max_time, unit: 'MINUTES') {
+            node('mxnetlinux') {
+              ws('workspace/sanity') {
+                init_git()
+                sh "python tools/license_header.py check"
+                make('lint', 'cpplint rcpplint jnilint')
+                make('lint', 'pylint')
+              }
+            }
           }
         }
-      }
-    }// set build status to success at the end
-      currentBuild.result = "SUCCESS"
+        // set build status to success at the end
+        currentBuild.result = "SUCCESS"
     } catch (caughtError) {
         node("mxnetlinux") {
             sh "echo caught error"
@@ -174,310 +175,310 @@ if (causeString.contains('BranchEventCause')){
 }
 
 if (causeString.contains('IssueCommentCause')){
-echo "A Github comment triggered this build!"
+    echo "A Github comment triggered this build!"
 
-try {
-    stage("Sanity Check") {
-      timeout(time: max_time, unit: 'MINUTES') {
-        node('mxnetlinux') {
-          ws('workspace/sanity') {
-            init_git()
-            sh "python tools/license_header.py check"
-            make('lint', 'cpplint rcpplint jnilint')
-            make('lint', 'pylint')
-          }
-        }
-      }
-    }
-
-    stage('Build') {
-      parallel 'CPU: Openblas': {
-        node('mxnetlinux') {
-          ws('workspace/build-cpu') {
-            init_git()
-            def flag = """ \
-    DEV=1                         \
-    USE_PROFILER=1                \
-    USE_CPP_PACKAGE=1             \
-    USE_BLAS=openblas             \
-    -j\$(nproc)
-    """
-            make("cpu", flag)
-            pack_lib('cpu')
-          }
-        }
-      },
-      'GPU: CUDA7.5+cuDNN5': {
-        node('mxnetlinux') {
-          ws('workspace/build-gpu') {
-            init_git()
-            def flag = """ \
-    DEV=1                         \
-    USE_PROFILER=1                \
-    USE_BLAS=openblas             \
-    USE_CUDA=1                    \
-    USE_CUDA_PATH=/usr/local/cuda \
-    USE_CUDNN=1                   \
-    USE_CPP_PACKAGE=1             \
-    -j\$(nproc)
-    """
-            make('gpu', flag)
-            pack_lib('gpu')
-            stash includes: 'build/cpp-package/example/test_score', name: 'cpp_test_score'
-          }
-        }
-      },
-      'Amalgamation MIN': {
-        node('mxnetlinux') {
-          ws('workspace/amalgamationmin') {
-            init_git()
-            make('cpu', '-C amalgamation/ clean')
-            make('cpu', '-C amalgamation/ USE_BLAS=openblas MIN=1')
-          }
-        }
-      },
-      'Amalgamation': {
-        node('mxnetlinux') {
-          ws('workspace/amalgamation') {
-            init_git()
-            make('cpu', '-C amalgamation/ clean')
-            make('cpu', '-C amalgamation/ USE_BLAS=openblas')
-          }
-        }
-      },
-      'GPU: MKLML': {
-        node('mxnetlinux') {
-          ws('workspace/build-mklml') {
-            init_git()
-            def flag = """ \
-    DEV=1                         \
-    USE_PROFILER=1                \
-    USE_BLAS=openblas             \
-    USE_MKL2017=1                 \
-    USE_MKL2017_EXPERIMENTAL=1    \
-    USE_CUDA=1                    \
-    USE_CUDA_PATH=/usr/local/cuda \
-    USE_CUDNN=1                   \
-    USE_CPP_PACKAGE=1             \
-    -j\$(nproc)
-    """
-            make('mklml_gpu', flag)
-            pack_lib('mklml')
-          }
-        }
-      }
-    }
-
-    stage('Unit Test') {
-      parallel 'Python2: CPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python2-cpu') {
-            init_git()
-            unpack_lib('cpu')
-            python2_ut('cpu')
-          }
-        }
-      },
-      'Python3: CPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python3-cpu') {
-            init_git()
-            unpack_lib('cpu')
-            python3_ut('cpu')
-          }
-        }
-      },
-      'Python2: GPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python2-gpu') {
-            init_git()
-            unpack_lib('gpu', mx_lib)
-            python2_gpu_ut('gpu')
-          }
-        }
-      },
-      'Python3: GPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python3-gpu') {
-            init_git()
-            unpack_lib('gpu', mx_lib)
-            python3_gpu_ut('gpu')
-          }
-        }
-      },
-      'Python2: MKLML-CPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python2-mklml-cpu') {
-            init_git()
-            unpack_lib('mklml')
-            python2_ut('mklml_gpu')
-          }
-        }
-      },
-      'Python2: MKLML-GPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python2-mklml-gpu') {
-            init_git()
-            unpack_lib('mklml')
-            python2_gpu_ut('mklml_gpu')
-          }
-        }
-      },
-      'Python3: MKLML-CPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python3-mklml-cpu') {
-            init_git()
-            unpack_lib('mklml')
-            python3_ut('mklml_gpu')
-          }
-        }
-      },
-      'Python3: MKLML-GPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-python3-mklml-gpu') {
-            init_git()
-            unpack_lib('mklml')
-            python3_gpu_ut('mklml_gpu')
-          }
-        }
-      },
-      'Scala: CPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-scala-cpu') {
-            init_git()
-            unpack_lib('cpu')
-            timeout(time: max_time, unit: 'MINUTES') {
-              sh "${docker_run} cpu make scalapkg USE_BLAS=openblas"
-              sh "${docker_run} cpu make scalatest USE_BLAS=openblas"
+    try {
+        stage("Sanity Check") {
+          timeout(time: max_time, unit: 'MINUTES') {
+            node('mxnetlinux') {
+              ws('workspace/sanity') {
+                init_git()
+                sh "python tools/license_header.py check"
+                make('lint', 'cpplint rcpplint jnilint')
+                make('lint', 'pylint')
+              }
             }
           }
         }
-      },
-      'Perl: CPU': {
+
+        stage('Build') {
+          parallel 'CPU: Openblas': {
             node('mxnetlinux') {
-                ws('workspace/ut-perl-cpu') {
-                    init_git()
-                    unpack_lib('cpu')
-                    timeout(time: max_time, unit: 'MINUTES') {
-                        sh "${docker_run} cpu ./perl-package/test.sh"
+              ws('workspace/build-cpu') {
+                init_git()
+                def flag = """ \
+        DEV=1                         \
+        USE_PROFILER=1                \
+        USE_CPP_PACKAGE=1             \
+        USE_BLAS=openblas             \
+        -j\$(nproc)
+        """
+                make("cpu", flag)
+                pack_lib('cpu')
+              }
+            }
+          },
+          'GPU: CUDA7.5+cuDNN5': {
+            node('mxnetlinux') {
+              ws('workspace/build-gpu') {
+                init_git()
+                def flag = """ \
+        DEV=1                         \
+        USE_PROFILER=1                \
+        USE_BLAS=openblas             \
+        USE_CUDA=1                    \
+        USE_CUDA_PATH=/usr/local/cuda \
+        USE_CUDNN=1                   \
+        USE_CPP_PACKAGE=1             \
+        -j\$(nproc)
+        """
+                make('gpu', flag)
+                pack_lib('gpu')
+                stash includes: 'build/cpp-package/example/test_score', name: 'cpp_test_score'
+              }
+            }
+          },
+          'Amalgamation MIN': {
+            node('mxnetlinux') {
+              ws('workspace/amalgamationmin') {
+                init_git()
+                make('cpu', '-C amalgamation/ clean')
+                make('cpu', '-C amalgamation/ USE_BLAS=openblas MIN=1')
+              }
+            }
+          },
+          'Amalgamation': {
+            node('mxnetlinux') {
+              ws('workspace/amalgamation') {
+                init_git()
+                make('cpu', '-C amalgamation/ clean')
+                make('cpu', '-C amalgamation/ USE_BLAS=openblas')
+              }
+            }
+          },
+          'GPU: MKLML': {
+            node('mxnetlinux') {
+              ws('workspace/build-mklml') {
+                init_git()
+                def flag = """ \
+        DEV=1                         \
+        USE_PROFILER=1                \
+        USE_BLAS=openblas             \
+        USE_MKL2017=1                 \
+        USE_MKL2017_EXPERIMENTAL=1    \
+        USE_CUDA=1                    \
+        USE_CUDA_PATH=/usr/local/cuda \
+        USE_CUDNN=1                   \
+        USE_CPP_PACKAGE=1             \
+        -j\$(nproc)
+        """
+                make('mklml_gpu', flag)
+                pack_lib('mklml')
+              }
+            }
+          }
+        }
+
+        stage('Unit Test') {
+          parallel 'Python2: CPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python2-cpu') {
+                init_git()
+                unpack_lib('cpu')
+                python2_ut('cpu')
+              }
+            }
+          },
+          'Python3: CPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python3-cpu') {
+                init_git()
+                unpack_lib('cpu')
+                python3_ut('cpu')
+              }
+            }
+          },
+          'Python2: GPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python2-gpu') {
+                init_git()
+                unpack_lib('gpu', mx_lib)
+                python2_gpu_ut('gpu')
+              }
+            }
+          },
+          'Python3: GPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python3-gpu') {
+                init_git()
+                unpack_lib('gpu', mx_lib)
+                python3_gpu_ut('gpu')
+              }
+            }
+          },
+          'Python2: MKLML-CPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python2-mklml-cpu') {
+                init_git()
+                unpack_lib('mklml')
+                python2_ut('mklml_gpu')
+              }
+            }
+          },
+          'Python2: MKLML-GPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python2-mklml-gpu') {
+                init_git()
+                unpack_lib('mklml')
+                python2_gpu_ut('mklml_gpu')
+              }
+            }
+          },
+          'Python3: MKLML-CPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python3-mklml-cpu') {
+                init_git()
+                unpack_lib('mklml')
+                python3_ut('mklml_gpu')
+              }
+            }
+          },
+          'Python3: MKLML-GPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-python3-mklml-gpu') {
+                init_git()
+                unpack_lib('mklml')
+                python3_gpu_ut('mklml_gpu')
+              }
+            }
+          },
+          'Scala: CPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-scala-cpu') {
+                init_git()
+                unpack_lib('cpu')
+                timeout(time: max_time, unit: 'MINUTES') {
+                  sh "${docker_run} cpu make scalapkg USE_BLAS=openblas"
+                  sh "${docker_run} cpu make scalatest USE_BLAS=openblas"
+                }
+              }
+            }
+          },
+          'Perl: CPU': {
+                node('mxnetlinux') {
+                    ws('workspace/ut-perl-cpu') {
+                        init_git()
+                        unpack_lib('cpu')
+                        timeout(time: max_time, unit: 'MINUTES') {
+                            sh "${docker_run} cpu ./perl-package/test.sh"
+                        }
                     }
                 }
-            }
-      },
-      'Perl: GPU': {
-            node('mxnetlinux') {
-                ws('workspace/ut-perl-gpu') {
-                    init_git()
-                    unpack_lib('gpu')
-                    timeout(time: max_time, unit: 'MINUTES') {
-                        sh "${docker_run} gpu ./perl-package/test.sh"
+          },
+          'Perl: GPU': {
+                node('mxnetlinux') {
+                    ws('workspace/ut-perl-gpu') {
+                        init_git()
+                        unpack_lib('gpu')
+                        timeout(time: max_time, unit: 'MINUTES') {
+                            sh "${docker_run} gpu ./perl-package/test.sh"
+                        }
                     }
                 }
+          },
+          'R: CPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-r-cpu') {
+                init_git()
+                unpack_lib('cpu')
+                timeout(time: max_time, unit: 'MINUTES') {
+                  sh "${docker_run} cpu rm -rf .Renviron"
+                  sh "${docker_run} cpu mkdir -p /workspace/ut-r-cpu/site-library"
+                  sh "${docker_run} cpu make rpkg USE_BLAS=openblas R_LIBS=/workspace/ut-r-cpu/site-library"
+                  sh "${docker_run} cpu R CMD INSTALL --library=/workspace/ut-r-cpu/site-library R-package"
+                  sh "${docker_run} cpu make rpkgtest R_LIBS=/workspace/ut-r-cpu/site-library"
+                }
+              }
             }
-      },
-      'R: CPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-r-cpu') {
-            init_git()
-            unpack_lib('cpu')
-            timeout(time: max_time, unit: 'MINUTES') {
-              sh "${docker_run} cpu rm -rf .Renviron"
-              sh "${docker_run} cpu mkdir -p /workspace/ut-r-cpu/site-library"
-              sh "${docker_run} cpu make rpkg USE_BLAS=openblas R_LIBS=/workspace/ut-r-cpu/site-library"
-              sh "${docker_run} cpu R CMD INSTALL --library=/workspace/ut-r-cpu/site-library R-package"
-              sh "${docker_run} cpu make rpkgtest R_LIBS=/workspace/ut-r-cpu/site-library"
+          },
+          'R: GPU': {
+            node('mxnetlinux') {
+              ws('workspace/ut-r-gpu') {
+                init_git()
+                unpack_lib('gpu')
+                timeout(time: max_time, unit: 'MINUTES') {
+                  sh "${docker_run} gpu rm -rf .Renviron"
+                  sh "${docker_run} gpu mkdir -p /workspace/ut-r-gpu/site-library"
+                  sh "${docker_run} gpu make rpkg USE_BLAS=openblas R_LIBS=/workspace/ut-r-gpu/site-library"
+                  sh "${docker_run} gpu R CMD INSTALL --library=/workspace/ut-r-gpu/site-library R-package"
+                  sh "${docker_run} gpu make rpkgtest R_LIBS=/workspace/ut-r-gpu/site-library R_GPU_ENABLE=1"
+                }
+              }
             }
           }
         }
-      },
-      'R: GPU': {
-        node('mxnetlinux') {
-          ws('workspace/ut-r-gpu') {
-            init_git()
-            unpack_lib('gpu')
-            timeout(time: max_time, unit: 'MINUTES') {
-              sh "${docker_run} gpu rm -rf .Renviron"
-              sh "${docker_run} gpu mkdir -p /workspace/ut-r-gpu/site-library"
-              sh "${docker_run} gpu make rpkg USE_BLAS=openblas R_LIBS=/workspace/ut-r-gpu/site-library"
-              sh "${docker_run} gpu R CMD INSTALL --library=/workspace/ut-r-gpu/site-library R-package"
-              sh "${docker_run} gpu make rpkgtest R_LIBS=/workspace/ut-r-gpu/site-library R_GPU_ENABLE=1"
-            }
-          }
-        }
-      }
-    }
 
-    stage('Integration Test') {
-      parallel 'Python': {
-        node('mxnetlinux') {
-          ws('workspace/it-python-gpu') {
-            init_git()
-            unpack_lib('gpu')
-            timeout(time: max_time, unit: 'MINUTES') {
-              sh "${docker_run} gpu PYTHONPATH=./python/ python example/image-classification/test_score.py"
+        stage('Integration Test') {
+          parallel 'Python': {
+            node('mxnetlinux') {
+              ws('workspace/it-python-gpu') {
+                init_git()
+                unpack_lib('gpu')
+                timeout(time: max_time, unit: 'MINUTES') {
+                  sh "${docker_run} gpu PYTHONPATH=./python/ python example/image-classification/test_score.py"
+                }
+              }
+            }
+          },
+          'Caffe': {
+            node('mxnetlinux') {
+              ws('workspace/it-caffe') {
+                init_git()
+                unpack_lib('gpu')
+                timeout(time: max_time, unit: 'MINUTES') {
+                  sh "${docker_run} caffe_gpu PYTHONPATH=/caffe/python:./python python tools/caffe_converter/test_converter.py"
+                }
+              }
+            }
+          },
+          'cpp-package': {
+            node('mxnetlinux') {
+              ws('workspace/it-cpp-package') {
+                init_git()
+                unpack_lib('gpu')
+                unstash 'cpp_test_score'
+                timeout(time: max_time, unit: 'MINUTES') {
+                  sh "${docker_run} gpu cpp-package/tests/ci_test.sh"
+                }
+              }
             }
           }
         }
-      },
-      'Caffe': {
-        node('mxnetlinux') {
-          ws('workspace/it-caffe') {
-            init_git()
-            unpack_lib('gpu')
-            timeout(time: max_time, unit: 'MINUTES') {
-              sh "${docker_run} caffe_gpu PYTHONPATH=/caffe/python:./python python tools/caffe_converter/test_converter.py"
-            }
-          }
-        }
-      },
-      'cpp-package': {
-        node('mxnetlinux') {
-          ws('workspace/it-cpp-package') {
-            init_git()
-            unpack_lib('gpu')
-            unstash 'cpp_test_score'
-            timeout(time: max_time, unit: 'MINUTES') {
-              sh "${docker_run} gpu cpp-package/tests/ci_test.sh"
-            }
-          }
-        }
-      }
-    }
 
-    stage('Deploy') {
-      node('mxnetlinux') {
-        ws('workspace/docs') {
-          if (env.BRANCH_NAME == "master") {
-            init_git()
-            sh "make clean"
-            sh "make docs"
+        stage('Deploy') {
+          node('mxnetlinux') {
+            ws('workspace/docs') {
+              if (env.BRANCH_NAME == "master") {
+                init_git()
+                sh "make clean"
+                sh "make docs"
+              }
+            }
           }
         }
-      }
-    }
-  // set build status to success at the end
-  currentBuild.result = "SUCCESS"
-} catch (caughtError) {
-    node("mxnetlinux") {
-        sh "echo caught error"
-        err = caughtError
-        currentBuild.result = "FAILURE"
-    }
-} finally {
-    node("mxnetlinux") {
-        // Only send email if master failed
-        if (currentBuild.result == "FAILURE" && env.BRANCH_NAME == "master") {
-            emailext body: 'Build for MXNet branch ${BRANCH_NAME} has broken. Please view the build at ${BUILD_URL}', replyTo: '${EMAIL}', subject: '[BUILD FAILED] Branch ${BRANCH_NAME} build ${BUILD_NUMBER}', to: '${EMAIL}'
+      // set build status to success at the end
+      currentBuild.result = "SUCCESS"
+    } catch (caughtError) {
+        node("mxnetlinux") {
+            sh "echo caught error"
+            err = caughtError
+            currentBuild.result = "FAILURE"
         }
-        // Remember to rethrow so the build is marked as failing
-        if (err) {
-            throw err
+    } finally {
+        node("mxnetlinux") {
+            // Only send email if master failed
+            if (currentBuild.result == "FAILURE" && env.BRANCH_NAME == "master") {
+                emailext body: 'Build for MXNet branch ${BRANCH_NAME} has broken. Please view the build at ${BUILD_URL}', replyTo: '${EMAIL}', subject: '[BUILD FAILED] Branch ${BRANCH_NAME} build ${BUILD_NUMBER}', to: '${EMAIL}'
+            }
+            // Remember to rethrow so the build is marked as failing
+            if (err) {
+                throw err
+            }
         }
     }
-}
 }
 //second if ends here
 
 else {
-echo "Some other cause....push/new PR?"
+    echo "Some other cause....push/new PR?"
 }
