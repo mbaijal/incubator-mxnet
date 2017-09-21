@@ -140,7 +140,7 @@ def causeString = cause[0].toString()
 if (causeString.contains('BranchEventCause')){
     echo "PR Event!"
     try {
-        stage("Sanity Check") {
+        stage("Smoke Test") {
           timeout(time: max_time, unit: 'MINUTES') {
             node('mxnetlinux') {
               ws('workspace/sanity') {
@@ -174,7 +174,7 @@ if (causeString.contains('BranchEventCause')){
     }
 }
 
-if (causeString.contains('IssueCommentCause')){
+else if (causeString.contains('IssueCommentCause')){
     echo "A Github comment triggered this build!"
 
     try {
