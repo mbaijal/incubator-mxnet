@@ -139,12 +139,38 @@ def causeString = cause[0].toString()
 
 if (causeString.contains('BranchEventCause')){
     echo "PR Event!"
+    try {
     stage("Smoke Test") {
-        timeout(time: max_time, unit: 'MINUTES') {
-            node('mxnetlinux') {
-                def runSmokeTest = load "SmokeTest.Groovy"
-                runSmokeTest.smokeTest_Sanity()
-    }}}
+      timeout(time: max_time, unit: 'MINUTES') {
+        node('mxnetlinux') {
+          ws('workspace/sanity') {
+            init_git()
+            sh "python tools/license_header.py check"
+            make('lint', 'cpplint rcpplint jnilint')
+            make('lint', 'pylint')
+          }
+        }
+      }
+    }// set build status to success at the end
+      currentBuild.result = "SUCCESS"
+    } catch (caughtError) {
+        node("mxnetlinux") {
+            sh "echo caught error"
+            err = caughtError
+            currentBuild.result = "FAILURE"
+        }
+    } finally {
+        node("mxnetlinux") {
+            // Only send email if master failed
+            if (currentBuild.result == "FAILURE" && env.BRANCH_NAME == "master") {
+                emailext body: 'Build for MXNet branch ${BRANCH_NAME} has broken. Please view the build at ${BUILD_URL}', replyTo: '${EMAIL}', subject: '[BUILD FAILED] Branch ${BRANCH_NAME} build ${BUILD_NUMBER}', to: '${EMAIL}'
+            }
+            // Remember to rethrow so the build is marked as failing
+            if (err) {
+                throw err
+            }
+        }
+    }
 }
 
 if (causeString.contains('IssueCommentCause')){
