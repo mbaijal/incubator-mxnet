@@ -339,10 +339,7 @@ try {
             }
           }
         }
-      },
-
-
-       }
+      }
     }
 
     stage('Integration Test') {
