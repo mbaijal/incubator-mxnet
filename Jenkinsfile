@@ -119,6 +119,7 @@ try {
       timeout(time: max_time, unit: 'MINUTES') {
         node('mxnetlinux') {
           ws('workspace/sanity') {
+            checkTrigger()
             init_git()
             sh "python tools/license_header.py check"
             make('lint', 'cpplint rcpplint jnilint')
