@@ -47,7 +47,7 @@ def make(docker_type, make_flag) {
 def smokeTest_Sanity()
 {
     try {
-        stage("Sanity Check") {
+
           timeout(time: max_time, unit: 'MINUTES') {
             node('mxnetlinux') {
               ws('workspace/sanity') {
@@ -58,7 +58,7 @@ def smokeTest_Sanity()
               }
             }
           }
-        }
+
 
       // set build status to success at the end
       currentBuild.result = "SUCCESS"
@@ -81,3 +81,4 @@ def smokeTest_Sanity()
         }
     }
 }
+return this

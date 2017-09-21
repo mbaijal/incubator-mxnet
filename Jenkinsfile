@@ -139,8 +139,10 @@ def causeString = cause[0].toString()
 
 if (causeString.contains('BranchEventCause')){
     echo "PR Event!"
+    stage("Smoke Test") {
     def runSmokeTest = load "SmokeTest.Groovy"
     runSmokeTest.smokeTest_Sanity()
+    }
 }
 
 if (causeString.contains('IssueCommentCause')){
