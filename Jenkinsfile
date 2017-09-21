@@ -58,7 +58,6 @@ def init_git() {
 }
 
 
-
 // Run make. First try to do an incremental make from a previous workspace in hope to
 // accelerate the compilation. If something wrong, clean the workspace and then
 // build from scratch.
@@ -137,7 +136,7 @@ echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause
 def causeString = cause[0].toString()
 
 
-if (causeString.contains('BranchEventCause')){
+//if (causeString.contains('BranchEventCause')){
     echo "PR Event!"
     try {
         stage("Smoke Test") {
@@ -145,7 +144,7 @@ if (causeString.contains('BranchEventCause')){
             node('mxnetlinux') {
               ws('workspace/sanity') {
                 init_git()
-                //sh "python tools/license_header.py check"
+                sh "python tools/license_header.py check"
                 make('lint', 'cpplint rcpplint jnilint')
                 make('lint', 'pylint')
               }
@@ -172,7 +171,7 @@ if (causeString.contains('BranchEventCause')){
             }
         }
     }
-}
+//}
 
 if (causeString.contains('IssueCommentCause')){
     echo "A Github comment triggered this build!"
@@ -183,7 +182,7 @@ if (causeString.contains('IssueCommentCause')){
             node('mxnetlinux') {
               ws('workspace/sanity') {
                 init_git()
-                //sh "python tools/license_header.py check"
+                sh "python tools/license_header.py check"
                 make('lint', 'cpplint rcpplint jnilint')
                 make('lint', 'pylint')
               }
