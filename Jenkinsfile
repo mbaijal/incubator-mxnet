@@ -21,6 +21,13 @@ properties([
 def cause = currentBuild.rawBuild.getCauses()
 echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
 
+if (cause.contains('IssueCommentCause')){
+echo "A Github comment triggered this build!"
+} else if (cause.contains('BranchEventCause')){
+echo "Branch Event Cause!"
+} else {
+echo "Some other cause....push/new PR?"
+}
 
 def abortPreviousRunningBuilds() {
   def hi = Hudson.instance
