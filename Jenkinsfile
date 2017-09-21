@@ -18,6 +18,10 @@ properties([
   ])
 ])
 
+def cause = currentBuild.rawBuild.getCauses()
+echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
+def causeString = cause[0].toString()
+
 
 def abortPreviousRunningBuilds() {
   def hi = Hudson.instance
@@ -130,10 +134,6 @@ def python3_gpu_ut(docker_type) {
 }
 
 // ---------------------xxxxxxxxxxxxx---------------------
-
-def cause = currentBuild.rawBuild.getCauses()
-echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
-def causeString = cause[0].toString()
 
 
 //if (causeString.contains('BranchEventCause')){
