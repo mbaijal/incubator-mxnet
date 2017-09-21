@@ -17,9 +17,12 @@ properties([
         ])
     ])
 
-//def cause = currentBuild.rawBuild.getCauses()
-//echo "Branch is ${env.BRANCH_NAME} and PR # is ${CHANGE_ID} and cause is ${cause}"
-//def causeString = cause[0].toString()
+@NonCPS
+def checkTrigger() {
+def cause = currentBuild.rawBuild.getCauses()
+def causeString = cause[0].toString()
+echo "Branch is ${env.BRANCH_NAME} and cause is ${causeString}"
+}
 
 
 // initialize source codes
