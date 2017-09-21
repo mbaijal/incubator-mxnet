@@ -141,14 +141,13 @@ if (causeString.contains('BranchEventCause')){
     echo "PR Event!"
     try {
         stage("Smoke Test") {
+          timeout(time: max_time, unit: 'MINUTES') {
             node('mxnetlinux') {
-                timeout(time: max_time, unit: 'MINUTES') {
-
-                  ws('workspace/sanity') {
-                    init_git()
-                    sh "python tools/license_header.py check"
-                    make('lint', 'cpplint rcpplint jnilint')
-                    make('lint', 'pylint')
+              ws('workspace/sanity') {
+                init_git()
+                //sh "python tools/license_header.py check"
+                make('lint', 'cpplint rcpplint jnilint')
+                make('lint', 'pylint')
               }
             }
           }
@@ -184,7 +183,7 @@ if (causeString.contains('IssueCommentCause')){
             node('mxnetlinux') {
               ws('workspace/sanity') {
                 init_git()
-                sh "python tools/license_header.py check"
+                //sh "python tools/license_header.py check"
                 make('lint', 'cpplint rcpplint jnilint')
                 make('lint', 'pylint')
               }
