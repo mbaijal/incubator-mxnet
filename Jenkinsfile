@@ -13,7 +13,7 @@ err = null
 
 properties([
     pipelineTriggers([
-        abortRunning:true,
+        abortRunning(true) , 
         issueCommentTrigger('.*test this please.*')
         ])
     ])
