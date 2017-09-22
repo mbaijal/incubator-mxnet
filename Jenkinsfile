@@ -10,6 +10,8 @@ docker_run = 'tests/ci_build/ci_build.sh'
 max_time = 120
 // assign any caught errors here
 err = null
+//status should be null while the build is running
+currentBuild.result = null
 
 properties([
     pipelineTriggers([
@@ -117,6 +119,7 @@ def python3_gpu_ut(docker_type) {
 
 if (!checkTrigger()) {
     echo "Run Smoke Test and wait for Github Review Comment"
+    currentBuild.result = "SUCCESS"
 }
 
 if (checkTrigger()){
