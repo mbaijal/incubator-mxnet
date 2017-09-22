@@ -10,8 +10,6 @@ docker_run = 'tests/ci_build/ci_build.sh'
 max_time = 120
 // assign any caught errors here
 err = null
-//status should be null while the build is running
-currentBuild.result = null
 
 properties([
     pipelineTriggers([
