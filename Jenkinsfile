@@ -12,6 +12,7 @@ max_time = 120
 err = null
 
 properties([
+    abortRunning:true,
     pipelineTriggers([
         issueCommentTrigger('.*test this please.*')
         ])
