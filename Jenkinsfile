@@ -136,9 +136,12 @@ def python3_gpu_ut(docker_type) {
   }
 }
 
+stage("Purge") {
+    abortPreviousRunningBuilds()
+}
+
 if (!checkTrigger()) {
     echo "Run Smoke Test and wait for Github Review Comment"
-    abortPreviousRunningBuilds()
     currentBuild.result = "SUCCESS"
 }
 
