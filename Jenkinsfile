@@ -13,10 +13,12 @@ err = null
 
 properties([
     pipelineTriggers([
-        abortRunning(true) , 
+        cancelOutdatedJobs:true, 
         issueCommentTrigger('.*test this please.*')
         ])
     ])
+
+
 
 @NonCPS
 Boolean checkTrigger() {
