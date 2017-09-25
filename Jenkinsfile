@@ -137,7 +137,11 @@ def python3_gpu_ut(docker_type) {
 }
 
 stage("Purge") {
-    abortPreviousRunningBuilds()
+    timeout(time: max_time, unit: 'MINUTES') {
+        node('mxnetlinux') {
+            abortPreviousRunningBuilds()
+        }
+    }
 }
 
 if (!checkTrigger()) {
