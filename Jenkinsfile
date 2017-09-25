@@ -137,9 +137,7 @@ def python3_gpu_ut(docker_type) {
 }
 
 stage("Purge") {
-    timeout(time: max_time, unit: 'MINUTES') {
-        abortPreviousRunningBuilds()
-    }
+    abortPreviousRunningBuilds()
 }
 
 if (!checkTrigger()) {
