@@ -11,6 +11,27 @@ max_time = 120
 // assign any caught errors here
 err = null
 
+def abortPreviousRunningBuilds() {
+  def hi = Hudson.instance
+  def pname = env.JOB_NAME.split('/')[0]
+
+  hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+    def exec = build.getExecutor()
+
+    if (build.number != currentBuild.number && exec != null) {
+      exec.interrupt(
+        Result.ABORTED,
+        new CauseOfInterruption.UserInterruption(
+          "Aborted by #${currentBuild.number}"
+        )
+      )
+      println("Aborted previous running build #${build.number}")
+    } else {
+      println("Build is not running or is current build, not aborting - #${build.number}")
+    }
+  }
+}
+
 // initialize source codes
 def init_git() {
   retry(5) {
@@ -18,7 +39,7 @@ def init_git() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         sh 'git submodule update --init'
-        sh 'git clean -d -f'        
+        sh 'git clean -d -f'
       }
     } catch (exc) {
       deleteDir()
@@ -34,7 +55,7 @@ def init_git_win() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         bat 'git submodule update --init'
-        bat 'git clean -d -f'        
+        bat 'git clean -d -f'
       }
     } catch (exc) {
       deleteDir()
@@ -116,6 +137,11 @@ def python3_gpu_ut(docker_type) {
 }
 
 try {
+    stage("Purge") {
+        node('mxnetlinux') {
+            abortPreviousRunningBuilds()
+        }
+}
     stage("Sanity Check") {
       timeout(time: max_time, unit: 'MINUTES') {
         node('mxnetlinux') {
