@@ -11,6 +11,7 @@ max_time = 120
 // assign any caught errors here
 err = null
 
+//Method to Kill PR Builds that are running currently when a new build is triggered.
 def abortPreviousRunningBuilds() {
   def hi = Hudson.instance
   def pname = env.JOB_NAME.split('/')[0]
@@ -141,7 +142,7 @@ try {
         node('mxnetlinux') {
             abortPreviousRunningBuilds()
         }
-}
+    }
     stage("Sanity Check") {
       timeout(time: max_time, unit: 'MINUTES') {
         node('mxnetlinux') {
