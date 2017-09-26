@@ -25,7 +25,7 @@ def abortPreviousRunningBuilds() {
   hudsonInstance.getItem(projectName).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
     def exec = build.getExecutor()
 
-    if (build.number < currentBuild.number && exec != null) {
+    if (build.number != currentBuild.number && exec != null) {
       exec.interrupt(
         Result.ABORTED,
         new CauseOfInterruption.UserInterruption(
