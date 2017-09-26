@@ -15,9 +15,9 @@ err = null
 def abortPreviousRunningBuilds() {
   def hudsonInstance = Hudson.instance
   def pname = env.JOB_NAME.split('/')[0]
-  echo "the Job name is ${env.JOB_NAME} and the pname is ${pname}"
+  echo "the Job name is ${env.JOB_NAME} and the pname is ${pname} and the job_base_name is ${env.JOB_BASE_NAME}"
 
-  hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+  hudsonInstance.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
     def exec = build.getExecutor()
 
     if (build.number != currentBuild.number && exec != null) {
