@@ -147,7 +147,9 @@ try {
     stage("Sanity Check") {
       timeout(time: max_time, unit: 'MINUTES') {
         node('mxnetlinux') {
-          abortPreviousRunningBuilds()
+          if (env.BRANCH_NAME != "master"){
+            abortPreviousRunningBuilds()
+          }
           ws('workspace/sanity') {
             init_git()
             sh "python tools/license_header.py check"
