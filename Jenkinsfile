@@ -17,7 +17,7 @@ def abortPreviousRunningBuilds() {
 
   //env.JOB_NAME looks something like "incubator-mxnet/PR-7893" for a PR. projectName is incubator-mxnet
   def projectName = env.JOB_NAME.split('/')[0]
-  echo "the Job name is ${env.JOB_NAME} and the pname is ${pname} and the job_base_name is ${env.JOB_BASE_NAME}"
+  echo "the Job name is ${env.JOB_NAME} and the projectName is ${projectName} and the job_base_name is ${env.JOB_BASE_NAME}"
 
   //env.JOB_BASE_NAME is either the name of the branch or for a PR something like "PR-7893"
   //Once the project and the particular PR (or branch) is found, search for all builds within it.
@@ -25,7 +25,7 @@ def abortPreviousRunningBuilds() {
   hudsonInstance.getItem(projectName).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
     def exec = build.getExecutor()
 
-    if (build.number != currentBuild.number && exec != null) {
+    if (build.number < currentBuild.number && exec != null) {
       exec.interrupt(
         Result.ABORTED,
         new CauseOfInterruption.UserInterruption(
