@@ -11,6 +11,29 @@ max_time = 120
 // assign any caught errors here
 err = null
 
+//Method to Kill PR Builds that are running currently when a new build is triggered.
+def abortPreviousRunningBuilds() {
+  def hudsonInstance = Hudson.instance
+  def pname = env.JOB_NAME.split('/')[0]
+  echo "the Job name is ${env.JOB_NAME} and the pname is ${pname} and the job_base_name is ${env.JOB_BASE_NAME}"
+
+  hudsonInstance.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+    def exec = build.getExecutor()
+
+    if (build.number != currentBuild.number && exec != null) {
+      exec.interrupt(
+        Result.ABORTED,
+        new CauseOfInterruption.UserInterruption(
+          "Aborted by #${currentBuild.number}"
+        )
+      )
+      println("Aborted previous running build #${build.number}")
+    } else {
+      println("Build is not running or is current build, not aborting - #${build.number}")
+    }
+  }
+}
+
 // initialize source codes
 def init_git() {
   retry(5) {
@@ -18,7 +41,7 @@ def init_git() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         sh 'git submodule update --init'
-        sh 'git clean -d -f'        
+        sh 'git clean -d -f'
       }
     } catch (exc) {
       deleteDir()
@@ -34,7 +57,7 @@ def init_git_win() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         bat 'git submodule update --init'
-        bat 'git clean -d -f'        
+        bat 'git clean -d -f'
       }
     } catch (exc) {
       deleteDir()
@@ -119,6 +142,7 @@ try {
     stage("Sanity Check") {
       timeout(time: max_time, unit: 'MINUTES') {
         node('mxnetlinux') {
+          abortPreviousRunningBuilds()
           ws('workspace/sanity') {
             init_git()
             sh "python tools/license_header.py check"
@@ -370,11 +394,7 @@ try {
                     init_git()
                     unpack_lib('gpu')
                     timeout(time: max_time, unit: 'MINUTES') {
-                      try {
                         sh "${docker_run} gpu ./perl-package/test.sh"
-                      } catch (exc) {
-                        error "Perl GPU test failed."
-                      }
                     }
                 }
             }
