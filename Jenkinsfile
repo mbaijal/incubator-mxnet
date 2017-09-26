@@ -14,8 +14,8 @@ err = null
 //Method to Kill PR Builds that are running currently when a new build is triggered.
 def abortPreviousRunningBuilds() {
   def hudsonInstance = Hudson.instance
-  def pname = env.JOB_NAME.split('/')[0]
-  echo "the Job name is ${env.JOB_NAME} and the pname is ${pname} and the job_base_name is ${env.JOB_BASE_NAME}"
+  def projectName = env.JOB_NAME.split('/')[0]
+  echo "the env.JOB_NAME is ${env.JOB_NAME} and the pname is ${pname} and the job_base_name is ${env.JOB_BASE_NAME}"
 
   hudsonInstance.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
     def exec = build.getExecutor()
