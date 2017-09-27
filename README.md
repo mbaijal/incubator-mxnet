@@ -68,10 +68,6 @@ Ask Questions
 -------------
 * Please use [mxnet/issues](https://github.com/dmlc/mxnet/issues) for how to use mxnet and reporting bugs
 
-License
--------
-© Contributors, 2015-2017. Licensed under an [Apache-2.0](https://github.com/dmlc/mxnet/blob/master/LICENSE) license.
-
 Reference Paper
 ---------------
 
