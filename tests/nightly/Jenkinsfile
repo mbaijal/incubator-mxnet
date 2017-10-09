@@ -1,4 +1,4 @@
-node("Docker_Host_Ubuntu") {
+node("mxnetlinux") {
 
     echo "testing the change to docker run.sh"
 
