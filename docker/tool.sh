@@ -49,7 +49,7 @@ shift 1
 #RELEASE_TAG=${GIT_RELEASE_TAG}
 #Only for the release, change back to variable post release. Meghna update to 0.11.0 (correct tag)
 #Change Repo to mxnet for release and variable post release
-RELEASE_TAG='0.11.0'
+RELEASE_TAG='0.12.0.rc0'
 DOCKER_REPO='mxnet'
 shift 1
 
