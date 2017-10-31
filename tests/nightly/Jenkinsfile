@@ -1,10 +1,30 @@
-// -*- mode: groovy -*-
-// Jenkins pipeline
-// See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
-// Runs nightly builds
+node("Docker_Host_Ubuntu") {
 
-stage("Hello World") {
-  node('mxnetlinux') {
-    sh "echo 'Hello World'"
-  }
+    echo "testing the change to docker run.sh"
+
+    currentBuild.result = "SUCCESS"
+    try {
+       stage('Checkout'){
+          checkout scm
+       }
+
+
+       stage('Build Docker'){
+
+            sh 'cd docker && ./run.sh'
+       }
+    }
+    catch (err) {
+
+        currentBuild.result = "FAILURE"
+
+            mail body: "project build error is here: ${env.BUILD_URL}" ,
+            from: 'mxnet-ci@amazon.com',
+            replyTo: 'mxnet-ci@amazon.com',
+            subject: 'project build failed',
+            to: 'mbaijal@amazon.com'
+
+        throw err
+    }
 }
+
