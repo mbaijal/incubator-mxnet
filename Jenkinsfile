@@ -11,6 +11,34 @@ max_time = 120
 // assign any caught errors here
 err = null
 
+//Method to Kill PR Builds that are running currently when a new build is triggered.
+def abortPreviousRunningBuilds() {
+  def hudsonInstance = Hudson.instance
+
+  //env.JOB_NAME looks something like "incubator-mxnet/PR-7893" for a PR. projectName is incubator-mxnet
+  def projectName = env.JOB_NAME.split('/')[0]
+  echo "the Job name is ${env.JOB_NAME} and the projectName is ${projectName} and the job_base_name is ${env.JOB_BASE_NAME}"
+
+  //env.JOB_BASE_NAME is either the name of the branch or for a PR something like "PR-7893"
+  //Once the project and the particular PR (or branch) is found, search for all builds within it.
+
+  hudsonInstance.getItem(projectName).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+    def exec = build.getExecutor()
+
+    if (build.number < currentBuild.number && exec != null) {
+      exec.interrupt(
+        Result.ABORTED,
+        new CauseOfInterruption.UserInterruption(
+          "Aborted by #${currentBuild.number}"
+        )
+      )
+      println("Aborted previous running build #${build.number}")
+    } else {
+      println("Build is not running or is current build, not aborting - #${build.number}")
+    }
+  }
+}
+
 // initialize source codes
 def init_git() {
   deleteDir()
@@ -19,7 +47,7 @@ def init_git() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         sh 'git submodule update --init'
-        sh 'git clean -d -f'        
+        sh 'git clean -d -f'
       }
     } catch (exc) {
       deleteDir()
@@ -36,7 +64,7 @@ def init_git_win() {
       timeout(time: 2, unit: 'MINUTES') {
         checkout scm
         bat 'git submodule update --init'
-        bat 'git clean -d -f'        
+        bat 'git clean -d -f'
       }
     } catch (exc) {
       deleteDir()
@@ -121,6 +149,9 @@ try {
     stage("Sanity Check") {
       timeout(time: max_time, unit: 'MINUTES') {
         node('mxnetlinux') {
+          if (env.BRANCH_NAME != "master"){
+            abortPreviousRunningBuilds()
+          }
           ws('workspace/sanity') {
             init_git()
             sh "python tools/license_header.py check"
