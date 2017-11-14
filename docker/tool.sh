@@ -21,15 +21,16 @@
 # Script to build, test and push a docker container
 #
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
+HASH=$(git rev-parse HEAD)
 function show_usage() {
     echo ""
-    echo "Usage: $(basename $0) COMMAND LANGUAGE DEVICE"
+    echo "Usage: $(basename $0) COMMAND LANGUAGE DEVICE HASH"
     echo ""
-    echo "   COMMAND: build or commit."
-    echo "            commit needs logined in docker hub"
-    echo "   LANGUAGE: the language binding to buld, e.g. python, r-lang, julia, scala or perl"
-    echo "   DEVICE: targed device, e.g. cpu, or gpu"
+    echo "   COMMAND: build, test, or push."
+    echo "            push needs logined in docker hub"
+    echo "   LANGUAGE: the language binding to build, e.g. python, r-lang, julia, scala or perl"
+    echo "   DEVICE: targeted device, e.g. cpu, or gpu"
+    echo "   COMMIT: hash of the commit to build on"
     echo ""
 }
 
@@ -45,6 +46,11 @@ shift 1
 DEVICE=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
 shift 1
 
+#Params from the Jenkins Job
+RELEASE_TAG=${GIT_RELEASE_TAG}
+DOCKER_REPO=${DOCKER_REPO}
+
+
 DOCKERFILE_LIB="${SCRIPT_DIR}/Dockerfiles/Dockerfile.in.lib.${DEVICE}"
 if [ ! -e ${DOCKERFILE_LIB} ]; then
     echo "Error DEVICE=${DEVICE}, failed to find ${DOCKERFILE_LIB}"
@@ -59,40 +65,71 @@ if [ ! -e ${DOCKERFILE_LANG} ]; then
     exit 1
 fi
 
-if [[ "${DEVICE}" == *"gpu"* ]] && [[ "{COMMAND}" == "test" ]]; then
+# set docker binary
+if [[ "${DEVICE}" == "gpu" ]] && [[ "${COMMAND}" == "test" ]]; then
     DOCKER_BINARY="nvidia-docker"
 else
     DOCKER_BINARY="docker"
 fi
 
-DOCKER_TAG="mxnet/${LANGUAGE}"
-if [ "${DEVICE}" != 'cpu' ]; then
+# set docker tags
+DOCKER_TAG="${DOCKER_REPO}/${LANGUAGE}"
+if [[ "${DEVICE}" != 'cpu' ]]; then
     DOCKER_TAG="${DOCKER_TAG}:${DEVICE}"
+    if [[ -n "${RELEASE_TAG}" ]]; then
+        DOCKER_TAG_VERSIONED="${DOCKER_TAG}_${RELEASE_TAG}"
+    fi
+elif [[ -n "${RELEASE_TAG}" ]]; then
+    DOCKER_TAG_VERSIONED="${DOCKER_TAG}:${RELEASE_TAG}"
 fi
+
+# set base dockerfile
 DOCKERFILE="Dockerfile.${LANGUAGE}.${DEVICE}"
 
 # print arguments
 echo "DOCKER_BINARY: ${DOCKER_BINARY}"
 echo "DOCKERFILE: ${DOCKERFILE}"
 echo "DOCKER_TAG: ${DOCKER_TAG}"
+echo "DOCKER_TAG_VERSIONED: ${DOCKER_TAG_VERSIONED}"
 
+
+#BUILD Step
 if [[ "${COMMAND}" == "build" ]]; then
     rm -rf ${DOCKERFILE}
     cp ${DOCKERFILE_LIB} ${DOCKERFILE}
+    # checkout the release tag
+    sed -i "/cd mxnet/ s/$/\n\tgit checkout tags\/${RELEASE_TAG} -b ${RELEASE_TAG} \&\& git submodule update --recursive \&\& \\\/" ${DOCKERFILE}
     cat ${DOCKERFILE_LANG} >>${DOCKERFILE}
+
     # To remove the following error caused by opencv
     #    libdc1394 error: Failed to initialize libdc1394"
     CMD="sh -c 'ln -s /dev/null /dev/raw1394';"
+
     # setup scala classpath
     if [[ "${LANGUAGE}" == "scala" ]]; then
-        CMD+="CLASSPATH=\${CLASSPATH}:\`ls /mxnet/scala-package/assembly/linux-x86_64-*/target/*.jar | paste -sd \":\"\` "
+        CMD+="CLASSPATH=\${CLASSPATH}:\`ls /mxnet/scala-package/assembly/linux-x86_64-*/target/*.jar | paste -sd \":\"\`"
     fi
+
     echo "CMD ${CMD} bash" >>${DOCKERFILE}
     ${DOCKER_BINARY} build -t ${DOCKER_TAG} -f ${DOCKERFILE} .
+
+    if [[ -n "${DOCKER_TAG_VERSIONED}" ]]; then
+        ${DOCKER_BINARY} tag ${DOCKER_TAG} ${DOCKER_TAG_VERSIONED}
+    fi
+
+#TEST Step
+elif [[ "${COMMAND}" == "test" ]]; then
+    ./testDockers.sh
+
+
+#Push Step
 elif [[ "${COMMAND}" == "push" ]]; then
     ${DOCKER_BINARY} push ${DOCKER_TAG}
+    if [[ -n "${DOCKER_TAG_VERSIONED}" ]]; then
+        ${DOCKER_BINARY} push ${DOCKER_TAG_VERSIONED}
+    fi
 else
-    echo "Unknow COMMAND=${COMMAND}"
+    echo "Unknown COMMAND=${COMMAND}"
     show_usage
     exit 1
 fi
