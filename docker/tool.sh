@@ -122,12 +122,21 @@ elif [[ "${COMMAND}" == "test" ]]; then
     ./testDockers.sh
 
 
-#Push Step
+#PUSH Step
 elif [[ "${COMMAND}" == "push" ]]; then
     ${DOCKER_BINARY} push ${DOCKER_TAG}
     if [[ -n "${DOCKER_TAG_VERSIONED}" ]]; then
         ${DOCKER_BINARY} push ${DOCKER_TAG_VERSIONED}
     fi
+
+#CLEAN Step (This step is not being called currently and must be tested first, might require some inputs)
+elif [[ "${COMMAND}" == "clean" ]]; then
+    #Remove all stopped containers
+    ${DOCKER_BINARY} rm $(docker ps -a -q)
+    #Remove images which are not tagged / <none>
+    docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+
+
 else
     echo "Unknown COMMAND=${COMMAND}"
     show_usage
