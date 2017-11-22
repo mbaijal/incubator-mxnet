@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds docker containers at the current commit
+# Builds docker containers using the tag specified in the tool.sh file
 # Publishes them if this is triggered from a tagging event and running in the CI
 
 HASH=$(git rev-parse HEAD)
