@@ -20,6 +20,7 @@
 #
 # Script to build, test and push a docker container
 #
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HASH=$(git rev-parse HEAD)
 function show_usage() {
@@ -129,8 +130,19 @@ elif [[ "${COMMAND}" == "push" ]]; then
         ${DOCKER_BINARY} push ${DOCKER_TAG_VERSIONED}
     fi
 
-#CLEAN Step (This step is not being called currently and must be tested first, might require some inputs)
+
+#CLEAN Step
 elif [[ "${COMMAND}" == "clean" ]]; then
+    #Remove all stopped containers
+    ${DOCKER_BINARY} rm $(docker ps -a -q)
+    #Remove images which are not tagged / <none>
+    docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+    #Remove images which were just created for testing
+    ${DOCKER_BINARY} rm ${DOCKER_TAG_VERSIONED}
+
+
+#CLEAN All Step (This step is not being called currently and must be tested first, might require some inputs)
+elif [[ "${COMMAND}" == "clean-all" ]]; then
     #Remove all stopped containers
     ${DOCKER_BINARY} rm $(docker ps -a -q)
     #Remove images which are not tagged / <none>
