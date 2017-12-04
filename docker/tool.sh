@@ -138,15 +138,21 @@ elif [[ "${COMMAND}" == "clean" ]]; then
     #Remove images which are not tagged / <none>
     docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
     #Remove images which were just created for testing
-    ${DOCKER_BINARY} rm ${DOCKER_TAG_VERSIONED}
+    ${DOCKER_BINARY} rmi ${DOCKER_TAG}
+    if [[ -n "${DOCKER_TAG_VERSIONED}" ]]; then
+        ${DOCKER_BINARY} rmi ${DOCKER_TAG_VERSIONED}
+    fi
 
 
 #CLEAN All Step (This step is not being called currently and must be tested first, might require some inputs)
+#Only use on dedicated instances
 elif [[ "${COMMAND}" == "clean-all" ]]; then
     #Remove all stopped containers
     ${DOCKER_BINARY} rm $(docker ps -a -q)
     #Remove images which are not tagged / <none>
     docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+    #Remove all images
+    docker rmi $(docker images -q) --force
 
 
 else

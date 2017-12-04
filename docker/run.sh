@@ -20,11 +20,12 @@
 # Builds docker containers using the tag specified in the tool.sh file
 # Publishes them if this is triggered from a tagging event and running in the CI
 
+# todo: Do I need these?
 HASH=$(git rev-parse HEAD)
 TAG=$(basename $(git describe --all --exact-match ${HASH}))
 RELEASE_TAG=$(basename $(git tag -l --contains ${HASH}))
 
-#This should be the last thing to be tested
+# todo: Remove defaults, make env variable
 IS_PUBLISH=false
 IS_CLEAN=false
 
@@ -34,20 +35,25 @@ echo "IS_PUBLISH: $IS_PUBLISH"
 echo "RELEASE_TAG: $RELEASE_TAG"
 
 
-# Add build with gpu cuda9 here
+# todo: Add build with gpu_cuda9 here
+# todo: Add build with mkl flag here
+
 DEVICES=('cpu' 'gpu')
 LANGUAGES=('python' 'julia' 'r-lang' 'scala' 'perl')
 for DEV in "${DEVICES[@]}"; do
     for LANG in "${LANGUAGES[@]}"; do
+        # Build all docker images
         ./tool.sh build ${LANG} ${DEV} ${HASH}
         ./tool.sh test ${LANG} ${DEV} ${HASH}
+
+        # Push if IS_PUBLISH is set
         if [[ -n "$TAG" && "$IS_PUBLISH" == true ]]; then
-            # Push if triggered by tagging event and IS_PUBLISH is set
-            echo "Alert! Pushing to DockerHub, using account mbaijal!"
+            echo "Alert! Pushing to DockerHub"
             ./tool.sh push ${LANG} ${DEV} ${HASH}
         fi
+
+        # Delete the image just built
         if [[ -n "$IS_CLEAN" == true ]]; then
-            # Delete the image just built
             echo "Deleting the image"
             ./tool.sh clean ${LANG} ${DEV} ${HASH}
         fi
