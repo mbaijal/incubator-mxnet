@@ -24,7 +24,7 @@
 
 try {
      stage('Checkout'){
-        node("ncclhost") {
+        node("Docker_Host_Ubuntu") {
             checkout scm
         }
      }
