@@ -19,7 +19,7 @@
 
 
 echo "install maven"
-#sudo apt-get install maven -y >/dev/null
+apt-get install maven -y >/dev/null
 
 echo "install svn"
 #sudo apt-get install subversion -y >/dev/null
