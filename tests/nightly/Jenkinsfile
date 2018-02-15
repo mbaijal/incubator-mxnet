@@ -29,11 +29,18 @@ try {
         }
      }
 
-     stage('Build Docker'){
+     stage('Build'){
         node("Docker_Host_Ubuntu") {
             sh 'cd tests/nightly && ls'
         }
      }
+
+     stage('Test'){
+        node("Docker_Host_Ubuntu") {
+            sh 'cd tests/nightly && ./license_check.sh'
+        }
+     }
+
      } catch (err) {
         currentBuild.result = "FAILURE"
         mail body: "project build error is here: ${env.BUILD_URL}" ,
