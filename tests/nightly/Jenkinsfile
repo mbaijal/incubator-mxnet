@@ -21,8 +21,26 @@
 // See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
 // Runs nightly builds
 
-stage("Hello World") {
-  node('mxnetlinux') {
-    sh "echo 'Hello World'"
-  }
-}
+
+try {
+     stage('Checkout'){
+        node("Docker_Host_Ubuntu") {
+            checkout scm
+        }
+     }
+
+     stage('Build Docker'){
+        node("Docker_Host_Ubuntu") {
+            sh 'cd tests/nightly && ls'
+        }
+     }
+     } catch (err) {
+        currentBuild.result = "FAILURE"
+        mail body: "project build error is here: ${env.BUILD_URL}" ,
+        from: 'mxnet-ci@amazon.com',
+        replyTo: 'mxnet-ci@amazon.com',
+        subject: 'project build failed',
+        to: 'mbaijal@amazon.com'
+
+        throw err
+    }
