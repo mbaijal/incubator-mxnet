@@ -19,10 +19,10 @@
 
 
 echo "install maven"
-sudo apt install maven -y >/dev/null
+sudo apt-get install maven -y >/dev/null
 
 echo "install svn"
-sudo apt install subversion -y >/dev/null
+sudo apt-get install subversion -y >/dev/null
 
 echo "download RAT"
 svn co http://svn.apache.org/repos/asf/creadur/rat/trunk/ >/dev/null
