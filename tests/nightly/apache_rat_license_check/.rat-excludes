@@ -32,7 +32,7 @@ Dockerfile*
 docs/*
 __init__.py
 build/*
-.*t
+*\\.t
 perl-package/*
 example/rcnn/rcnn/cython/*
-
+*.csv
