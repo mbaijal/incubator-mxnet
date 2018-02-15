@@ -17,7 +17,6 @@
 # specific language governing permissions and limitations
 # under the License.
 
-set -e
 
 echo "install maven"
 sudo apt install maven -y >/dev/null
