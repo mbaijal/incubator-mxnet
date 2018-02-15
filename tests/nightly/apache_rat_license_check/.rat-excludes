@@ -35,7 +35,7 @@ build/*
 .*\\.t
 perl-package/*
 example/rcnn/rcnn/cython/*
-*.csv
+.*csv
 
 CODEOWNERS
 prepare_mkl.sh
@@ -62,3 +62,5 @@ src/operator/nn/im2col.cuh
 src/operator/nn/im2col.h
 src/operator/nn/pool.h
 tools/coreml/pip_package/README.rst
+
+/home/ubuntu/workspace/RAT_LicenseCheck/example/gluon/tree_lstm/dataset.cPickle
