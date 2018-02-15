@@ -9,7 +9,7 @@
 .*txt
 .*md
 3rdparty/*
-example/rcnn/rcnn/*
+example\\/rcnn\\/rcnn\\/*
 dmlc-core/*
 mshadow/*
 dmlc-core/*
@@ -21,9 +21,9 @@ src/operator/mkl/*
 trunk/*
 docker/*
 docker_multiarch/*
-*\\.m
-*\\.mk
-*\\.R
+.*\\.m
+.*\\.mk
+.*\\.R
 contrib/*
 Dockerfile*
 .*svg
@@ -32,7 +32,7 @@ Dockerfile*
 docs/*
 __init__.py
 build/*
-*\\.t
+.*\\.t
 perl-package/*
 example/rcnn/rcnn/cython/*
 *.csv
