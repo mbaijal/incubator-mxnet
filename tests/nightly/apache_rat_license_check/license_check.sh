@@ -19,7 +19,7 @@
 
 
 echo "install maven"
-apt-get install maven -y #>/dev/null
+sudo apt-get install maven -y #>/dev/null
 
 echo "install svn"
 sudo apt-get install subversion -y #>/dev/null
@@ -37,5 +37,8 @@ echo "build success, cd into target"
 cd apache-rat/target
 
 echo "run apache RAT check"
-#java -jar apache-rat-0.13-SNAPSHOT.jar -d /home/ubuntu/workspace/Rat_LicenseCheck_2/docs -e ".+\\.xml" -e "\..*" -e ".+\\.css" -e "\\.*" -e ".+\\.ipynb" -e ".+\\.html" -e ".+\\.json" -e ".+\\.js" -e ".+\\.txt" -e ".+\\.md" -e '3rdparty/*' -e '/example/rcnn/rcnn/*' -e 'dmlc-core/*' -e 'mshadow/*' -e 'dmlc-core/*' -e 'dlpack/*' -e 'R-package/*' -e 'nnvm/*' -e 'ps-lite/*' -e 'src/operator/mkl/*' -e 'trunk/*' -e 'docker/*' -e 'docker_multiarch/*' -e ".+\\.m" -e ".+\\.mk" -e ".+\\.R" -e 'contrib/*' -e 'Dockerfile*' -e ".+\\.svg" -e ".+\\.cfg" -e ".+\\.config" -e 'docs/*' -e '__init__.py' -e 'build/*' -e ".+\\.t"
+java -jar apache-rat-0.13-SNAPSHOT.jar -E /home/ubuntu/workspace/MigrateNightlies/tests/nightly/apache_rat_license_check/.rat-excludes -d /home/ubuntu/workspace/MigrateNightlies
+
+
+#-e ".+\\.xml" -e "\..*" -e ".+\\.css" -e "\\.*" -e ".+\\.ipynb" -e ".+\\.html" -e ".+\\.json" -e ".+\\.js" -e ".+\\.txt" -e ".+\\.md" -e '3rdparty/*' -e '/example/rcnn/rcnn/*' -e 'dmlc-core/*' -e 'mshadow/*' -e 'dmlc-core/*' -e 'dlpack/*' -e 'R-package/*' -e 'nnvm/*' -e 'ps-lite/*' -e 'src/operator/mkl/*' -e 'trunk/*' -e 'docker/*' -e 'docker_multiarch/*' -e ".+\\.m" -e ".+\\.mk" -e ".+\\.R" -e 'contrib/*' -e 'Dockerfile*' -e ".+\\.svg" -e ".+\\.cfg" -e ".+\\.config" -e 'docs/*' -e '__init__.py' -e 'build/*' -e ".+\\.t"
 
