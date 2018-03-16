@@ -56,10 +56,8 @@ pool.h
 README.rst
 dataset.cPickle
 
-example\\/rcnn\\/rcnn\\/*
+
 example\\/rcnn\\/rcnn\\/cython\\/setup.py
-example\\/rcnn\\/rcnn\\/pycocotools\\/UPSTREAM_REV
-example/rcnn/rcnn/cython/*
-example\\/image-classification\\/predict-cpp\\/Makefile
+example\/rcnn\/rcnn\/pycocotools\/UPSTREAM_REV
+example/image-classification/predict-cpp/Makefile
 example\\/rcnn\\/Makefile
-rcnn/*
