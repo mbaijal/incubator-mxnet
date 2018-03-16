@@ -62,3 +62,7 @@ im2col.h
 pool.h
 README.rst
 dataset.cPickle
+/home/ubuntu/workspace/RAT_LicenseCheck/example/image-classification/predict-cpp/Makefile
+/home/ubuntu/workspace/RAT_LicenseCheck/example/rcnn/Makefile
+/home/ubuntu/workspace/RAT_LicenseCheck/example/rcnn/rcnn/cython/setup.py
+/home/ubuntu/workspace/RAT_LicenseCheck/example/rcnn/rcnn/pycocotools/UPSTREAM_REV
