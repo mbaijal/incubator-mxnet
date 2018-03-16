@@ -57,6 +57,6 @@ README.rst
 dataset.cPickle
 
 
-rcnn/
-image-classification/
+rcnn/*
+image-classification/*
 
