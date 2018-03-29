@@ -29,12 +29,6 @@ try {
         }
      }
 
-     stage('Build'){
-        node("ncclhost") {
-            sh 'cd tests/nightly && ls'
-        }
-     }
-
      stage('Test'){
         node("ncclhost") {
             sh 'cd tests/nightly/apache_rat_license_check && chmod 777 license_check.sh && ./license_check.sh'
