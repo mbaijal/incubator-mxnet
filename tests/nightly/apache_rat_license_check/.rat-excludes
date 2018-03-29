@@ -9,7 +9,13 @@
 .*txt
 .*md
 3rdparty/*
+dmlc-core/*
+mshadow/*
+dmlc-core/*
+dlpack/*
 R-package/*
+nnvm/*
+ps-lite/*
 src/operator/mkl/*
 trunk/*
 docker/*
