@@ -9,7 +9,6 @@
 .*txt
 .*md
 3rdparty/*
-dmlc-core/*
 mshadow/*
 dmlc-core/*
 dlpack/*
