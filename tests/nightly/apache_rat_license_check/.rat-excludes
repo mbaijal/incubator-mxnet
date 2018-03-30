@@ -11,8 +11,6 @@
 3rdparty/*
 dmlc-core/*
 R-package/*
-nnvm/*
-ps-lite/*
 src/operator/mkl/*
 trunk/*
 docker/*
