@@ -9,8 +9,7 @@
 .*txt
 .*md
 3rdparty/*
-mshadow/*
-dlpack/*
+dmlc-core/*
 R-package/*
 nnvm/*
 ps-lite/*
