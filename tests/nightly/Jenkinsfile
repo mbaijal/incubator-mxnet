@@ -19,7 +19,7 @@
 
 // Jenkins pipeline
 // See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
-// Runs nightly builds
+// Runs nightly tests which run on the source
 
 
 try {
@@ -32,6 +32,12 @@ try {
      stage('Test'){
         node("ncclhost") {
             sh 'cd tests/nightly/apache_rat_license_check && chmod 777 license_check.sh && ./license_check.sh'
+        }
+     }
+
+     stage('TestDocker'){
+        node("ncclhost") {
+            sh "ci/build.py --build --platform ubuntu_cpu"
         }
      }
 
