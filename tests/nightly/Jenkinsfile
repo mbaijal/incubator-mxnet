@@ -21,22 +21,43 @@
 // See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
 // Runs nightly tests which run on the source
 
+def init_git() {
+  deleteDir()
+  retry(5) {
+    try {
+      // Make sure wait long enough for api.github.com request quota. Important: Don't increase the amount of
+      // retries as this will increase the amount of requests and worsen the throttling
+      timeout(time: 15, unit: 'MINUTES') {
+        checkout scm
+        sh 'git submodule update --init --recursive'
+        sh 'git clean -d -f'
+      }
+    } catch (exc) {
+      deleteDir()
+      error "Failed to fetch source codes with ${exc}"
+      sleep 2
+    }
+  }
+}
 
 try {
-     stage('Checkout'){
+     stage('SanityCheck'){
         node("ncclhost") {
-            checkout scm
+            sh "pwd"
+            sh "ls"
         }
      }
 
      stage('Test'){
         node("ncclhost") {
+            //init_git()
             //sh 'cd tests/nightly/apache_rat_license_check && chmod 777 license_check.sh && ./license_check.sh'
         }
      }
 
      stage('TestDocker'){
         node("ncclhost") {
+            init_git()
             sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh build_ubuntu_cpu_clang50"
         }
      }
