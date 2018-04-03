@@ -37,7 +37,7 @@ try {
 
      stage('TestDocker'){
         node("ncclhost") {
-            sh "ci/build.py --build --platform ubuntu_cpu"
+            sh "sudo ci/build.py --build --platform ubuntu_cpu"
         }
      }
 
