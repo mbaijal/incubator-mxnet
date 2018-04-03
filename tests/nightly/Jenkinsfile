@@ -37,7 +37,7 @@ try {
 
      stage('TestDocker'){
         node("ncclhost") {
-            sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh build_ubuntu_cpu_clang50 && ls"
+            sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh build_ubuntu_cpu_clang50"
         }
      }
 
