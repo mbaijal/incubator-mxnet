@@ -44,7 +44,7 @@ try {
      stage('SanityCheck'){
         node("ncclhost") {
             sh "pwd"
-            sh "ls"
+            //sh "ls"
         }
      }
 
