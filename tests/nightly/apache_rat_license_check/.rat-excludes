@@ -9,7 +9,6 @@
 .*txt
 .*md
 3rdparty/*
-dmlc-core/*
 R-package/*
 src/operator/mkl/*
 trunk/*
