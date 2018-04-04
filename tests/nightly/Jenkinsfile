@@ -58,7 +58,8 @@ try {
      stage('TestDocker'){
         node("ncclhost") {
             init_git()
-            sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh build_ubuntu_cpu_clang50"
+            //sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh build_ubuntu_cpu_clang50"
+            sh "sudo ci/build.py --build --platform ubuntu_cpu tests/nightly/apache_rat_license_check/license_check.sh"
         }
      }
 
