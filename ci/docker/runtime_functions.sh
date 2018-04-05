@@ -540,6 +540,12 @@ test_ubuntu_cpu_python3() {
     popd
 }
 
+# Nightly Tests
+nightly_test_source() {
+    set -ex
+    tests/nightly/apache_rat_license_check/license_check.sh
+}
+
 # Deploy
 
 deploy_docs() {
