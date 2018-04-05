@@ -37,6 +37,6 @@ echo "build success, cd into target"
 cd apache-rat/target
 
 echo "run apache RAT check"
-java -jar apache-rat-0.13-SNAPSHOT.jar -E /home/ubuntu/workspace/MigrateNightlies/tests/nightly/apache_rat_license_check/.rat-excludes -d /home/ubuntu/workspace/MigrateNightlies
+java -jar apache-rat-0.13-SNAPSHOT.jar -E /home/ubuntu/workspace/NightlyPipeline_onSource/tests/nightly/apache_rat_license_check/.rat-excludes -d /home/ubuntu/workspace/NightlyPipeline_onSource
 
 

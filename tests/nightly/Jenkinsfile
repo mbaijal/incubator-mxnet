@@ -59,8 +59,6 @@ try {
         node("ncclhost") {
             init_git()
             sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
-            //sh "chmod 777 tests/nightly/apache_rat_license_check/license_check.sh"
-            //sh "sudo ci/build.py --build --platform ubuntu_cpu tests/nightly/apache_rat_license_check/license_check.sh"
         }
      }
 
