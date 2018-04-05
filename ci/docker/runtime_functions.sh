@@ -543,6 +543,7 @@ test_ubuntu_cpu_python3() {
 # Nightly Tests
 nightly_test_source() {
     set -ex
+    chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
     tests/nightly/apache_rat_license_check/license_check.sh
 }
 
