@@ -53,4 +53,4 @@ dataset.cPickle
 
 rcnn/*
 image-classification/*
-apache-rat-tasks/*
+report-bad-configurations.xml
