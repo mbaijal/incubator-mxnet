@@ -542,12 +542,8 @@ test_ubuntu_cpu_python3() {
 
 # Nightly Tests
 nightly_test_source() {
-    #set -ex
-    #tests/nightly/apache_rat_license_check/license_check.sh runcheck
     set -ex
-    tools/license_header.py check
-    make cpplint rcpplint jnilint
-    make pylint
+    tests/nightly/apache_rat_license_check/license_check.sh
 }
 
 # Deploy
