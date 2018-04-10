@@ -26,6 +26,7 @@ docs/*
 __init__.py
 build/*
 .*\\.t
+perl-package/*
 .*csv
 .*names
 CODEOWNERS
