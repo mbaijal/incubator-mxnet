@@ -302,6 +302,7 @@ echo
 echo "### Testing Virtualenv ###"
 echo "${virtualenv_commands}"
 echo
+${virtualenv_commands}="apt-get update && apt-get install -y sudo && ${virtualenv_commands}"
 nvidia-docker run --rm nvidia/cuda:9.0-cudnn7-devel bash -c "${virtualenv_commands}"
 
 echo
