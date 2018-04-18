@@ -43,7 +43,7 @@ def init_git() {
 try {
      stage('SanityCheck'){
         node("newslave") {
-            sh "pwd"
+            //sh "pwd"
             //sh "ls"
         }
      }
@@ -58,7 +58,7 @@ try {
      stage('TestDocker'){
         node("newslave") {
             init_git()
-            sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
+            sudo sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
         }
      }
 
