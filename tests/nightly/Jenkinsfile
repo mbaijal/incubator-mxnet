@@ -58,7 +58,7 @@ try {
      stage('TestDocker'){
         node("newslave") {
             init_git()
-            sudo sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
+            sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
         }
      }
 
