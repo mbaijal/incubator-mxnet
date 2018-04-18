@@ -50,7 +50,6 @@ pool.h
 README.rst
 dataset.cPickle
 
-
 rcnn/*
 image-classification/*
 report-bad-configurations.xml
