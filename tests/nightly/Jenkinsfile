@@ -42,21 +42,21 @@ def init_git() {
 
 try {
      stage('SanityCheck'){
-        node("ncclhost") {
+        node("newslave") {
             sh "pwd"
             //sh "ls"
         }
      }
 
      stage('Test'){
-        node("ncclhost") {
+        node("newslave") {
             //init_git()
             //sh 'cd tests/nightly/apache_rat_license_check && chmod 777 license_check.sh && ./license_check.sh'
         }
      }
 
      stage('TestDocker'){
-        node("ncclhost") {
+        node("newslave") {
             init_git()
             sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
         }
