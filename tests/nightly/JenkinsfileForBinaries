@@ -17,11 +17,23 @@
 // under the License.
 
 
-// Python 3
-def python3_gpu_ut(docker_container_name) {
-  timeout(time: max_time, unit: 'MINUTES') {
-    sh "ci/build.py --nvidiadocker --build --platform ${docker_container_name} /work/runtime_functions.sh unittest_ubuntu_python3_gpu"
-  }
+
+// pack libraries for later use
+def pack_lib(name, libs=mx_lib) {
+  sh """
+echo "Packing ${libs} into ${name}"
+echo ${libs} | sed -e 's/,/ /g' | xargs md5sum
+"""
+  stash includes: libs, name: name
+}
+
+// unpack libraries saved before
+def unpack_lib(name, libs=mx_lib) {
+  unstash name
+  sh """
+echo "Unpacked ${libs} from ${name}"
+echo ${libs} | sed -e 's/,/ /g' | xargs md5sum
+"""
 }
 
 def init_git() {
@@ -42,19 +54,32 @@ def init_git() {
 }
 
 try {
-     stage('Build'){
-        node("newslave") {
-
+  stage('Build') {
+    parallel 'GPU: CUDA9.1+cuDNN7': {
+      node('mxnetlinux-cpu') {
+        ws('workspace/build-gpu') {
+          init_git()
+          sh "ci/build.py --build --platform ubuntu_build_cuda /work/runtime_functions.sh build_ubuntu_gpu_cuda91_cudnn7"
+          pack_lib('gpu')
+          stash includes: 'build/cpp-package/example/test_score', name: 'cpp_test_score'
+          stash includes: 'build/cpp-package/example/test_optimizer', name: 'cpp_test_optimizer'
         }
-     }
-
-     stage('TestDocker'){
-        node("newslave") {
-            init_git()
-            sh "sudo ci/build.py --build --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_binaries"
-        }
-     }
-
-     } catch (err) {
-        throw err
+      }
     }
+  }
+
+  stage('NightlyTests'){
+    parallel 'UbuntuTutorial: GPU': {
+      node('mxnetlinux-gpu') {
+        ws('workspace/nt-tutorialTest') {
+          init_git()
+          unpack_lib('gpu', mx_lib)
+          sh "ci/build.py --nvidiadocker --build --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_binaries"
+        }
+      }
+    }
+  }
+
+  } catch (err) {
+        throw err
+  }
