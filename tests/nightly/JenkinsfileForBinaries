@@ -17,6 +17,7 @@
 // under the License.
 
 
+mx_lib = 'lib/libmxnet.so, lib/libmxnet.a, 3rdparty/dmlc-core/libdmlc.a, 3rdparty/nnvm/lib/libnnvm.a'
 
 // pack libraries for later use
 def pack_lib(name, libs=mx_lib) {
