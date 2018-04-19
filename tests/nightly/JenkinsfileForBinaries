@@ -17,37 +17,44 @@
 // under the License.
 
 
-// Jenkins pipeline
-// See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
-// Runs nightly builds
+// Python 3
+def python3_gpu_ut(docker_container_name) {
+  timeout(time: max_time, unit: 'MINUTES') {
+    sh "ci/build.py --nvidiadocker --build --platform ${docker_container_name} /work/runtime_functions.sh unittest_ubuntu_python3_gpu"
+  }
+}
 
+def init_git() {
+  deleteDir()
+  retry(5) {
+    try {
+      timeout(time: 15, unit: 'MINUTES') {
+        checkout scm
+        sh 'git submodule update --init --recursive'
+        sh 'git clean -d -f'
+      }
+    } catch (exc) {
+      deleteDir()
+      error "Failed to fetch source codes with ${exc}"
+      sleep 2
+    }
+  }
+}
 
 try {
-     stage('Checkout'){
-        node("ncclhost") {
-            checkout scm
-        }
-     }
-
      stage('Build'){
-        node("ncclhost") {
-            sh 'cd tests/nightly && ls'
+        node("newslave") {
+
         }
      }
 
-     stage('Test'){
-        node("ncclhost") {
-            sh 'cd tests/nightly/apache_rat_license_check && chmod 777 license_check.sh && ./license_check.sh'
+     stage('TestDocker'){
+        node("newslave") {
+            init_git()
+            sh "sudo ci/build.py --build --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_binaries"
         }
      }
 
      } catch (err) {
-        currentBuild.result = "FAILURE"
-        mail body: "project build error is here: ${env.BUILD_URL}" ,
-        from: 'mxnet-ci@amazon.com',
-        replyTo: 'mxnet-ci@amazon.com',
-        subject: 'project build failed',
-        to: 'mbaijal@amazon.com'
-
         throw err
     }

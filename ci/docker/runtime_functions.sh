@@ -547,6 +547,13 @@ nightly_test_source() {
     tests/nightly/apache_rat_license_check/license_check.sh
 }
 
+# Nightly Tests
+nightly_test_binaries() {
+    set -ex
+    chmod 777 tests/nightly/test_tutorial.py
+    tests/nightly/test_tutorial.py
+}
+
 # Deploy
 
 deploy_docs() {

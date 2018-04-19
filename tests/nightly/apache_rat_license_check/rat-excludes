@@ -49,7 +49,6 @@ im2col.h
 pool.h
 README.rst
 dataset.cPickle
-
 rcnn/*
 image-classification/*
-report-bad-configurations.xml
+report-normal-operation.xml

@@ -48,13 +48,6 @@ try {
         }
      }
 
-     stage('Test'){
-        node("newslave") {
-            //init_git()
-            //sh 'cd tests/nightly/apache_rat_license_check && chmod 777 license_check.sh && ./license_check.sh'
-        }
-     }
-
      stage('TestDocker'){
         node("newslave") {
             init_git()
