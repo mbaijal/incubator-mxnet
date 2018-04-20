@@ -543,7 +543,7 @@ test_ubuntu_cpu_python3() {
 # Nightly Tests
 nightly_test_source() {
     set -ex
-    sudo chmod -R 777 tests/nightly
+    chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
     tests/nightly/apache_rat_license_check/license_check.sh
 }
 
@@ -566,8 +566,9 @@ nightly_test_binaries() {
     sudo pip install future
     cd docs && make html
     cd ..
-    sudo chmod -R 777 tests/nightly
-    python tests/nightly/test_tutorial.py
+    chmod -R 777 tests/nightly/
+    cd tests/nightly
+    python test_tutorial.py
 }
 
 # Deploy
