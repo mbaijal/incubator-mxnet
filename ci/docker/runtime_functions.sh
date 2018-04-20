@@ -566,7 +566,7 @@ nightly_test_binaries() {
     sudo pip install future
     cd docs && make html
     cd ..
-    chmod 777 tests/nightly/test_tutorial.py
+    chmod 777 tests/nightly/*
     python tests/nightly/test_tutorial.py
 }
 
