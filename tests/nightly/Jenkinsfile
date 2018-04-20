@@ -19,10 +19,49 @@
 
 // Jenkins pipeline
 // See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
-// Runs nightly builds
+// Runs nightly tests which run on the source
 
-stage("Hello World") {
-  node('mxnetlinux') {
-    sh "echo 'Hello World'"
+def init_git() {
+  deleteDir()
+  retry(5) {
+    try {
+      // Make sure wait long enough for api.github.com request quota. Important: Don't increase the amount of
+      // retries as this will increase the amount of requests and worsen the throttling
+      timeout(time: 15, unit: 'MINUTES') {
+        checkout scm
+        sh 'git submodule update --init --recursive'
+        sh 'git clean -d -f'
+      }
+    } catch (exc) {
+      deleteDir()
+      error "Failed to fetch source codes with ${exc}"
+      sleep 2
+    }
   }
 }
+
+try {
+     stage('SanityCheck'){
+        node("newslave") {
+            //sh "pwd"
+            //sh "ls"
+        }
+     }
+
+     stage('TestDocker'){
+        node("newslave") {
+            init_git()
+            sh "sudo ci/build.py --build --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
+        }
+     }
+
+     } catch (err) {
+        currentBuild.result = "FAILURE"
+        mail body: "project build error is here: ${env.BUILD_URL}" ,
+        from: 'mxnet-ci@amazon.com',
+        replyTo: 'mxnet-ci@amazon.com',
+        subject: 'project build failed',
+        to: 'mbaijal@amazon.com'
+
+        throw err
+    }

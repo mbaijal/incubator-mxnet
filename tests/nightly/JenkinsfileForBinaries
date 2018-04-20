@@ -1,0 +1,86 @@
+// -*- mode: groovy -*-
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+
+mx_lib = 'lib/libmxnet.so, lib/libmxnet.a, 3rdparty/dmlc-core/libdmlc.a, 3rdparty/nnvm/lib/libnnvm.a'
+
+// pack libraries for later use
+def pack_lib(name, libs=mx_lib) {
+  sh """
+echo "Packing ${libs} into ${name}"
+echo ${libs} | sed -e 's/,/ /g' | xargs md5sum
+"""
+  stash includes: libs, name: name
+}
+
+// unpack libraries saved before
+def unpack_lib(name, libs=mx_lib) {
+  unstash name
+  sh """
+echo "Unpacked ${libs} from ${name}"
+echo ${libs} | sed -e 's/,/ /g' | xargs md5sum
+"""
+}
+
+def init_git() {
+  deleteDir()
+  retry(5) {
+    try {
+      timeout(time: 15, unit: 'MINUTES') {
+        checkout scm
+        sh 'git submodule update --init --recursive'
+        sh 'git clean -d -f'
+      }
+    } catch (exc) {
+      deleteDir()
+      error "Failed to fetch source codes with ${exc}"
+      sleep 2
+    }
+  }
+}
+
+try {
+  stage('Build') {
+    parallel 'GPU: CUDA9.1+cuDNN7': {
+      node('mxnetlinux-cpu') {
+        ws('workspace/build-gpu') {
+          init_git()
+          sh "sudo ci/build.py --build --platform ubuntu_build_cuda /work/runtime_functions.sh build_ubuntu_gpu_cuda91_cudnn7"
+          pack_lib('gpu')
+          stash includes: 'build/cpp-package/example/test_score', name: 'cpp_test_score'
+          stash includes: 'build/cpp-package/example/test_optimizer', name: 'cpp_test_optimizer'
+        }
+      }
+    }
+  }
+
+  stage('NightlyTests'){
+    parallel 'UbuntuTutorial: GPU': {
+      node('mxnetlinux-gpu') {
+        ws('workspace/nt-tutorialTest') {
+          init_git()
+          unpack_lib('gpu', mx_lib)
+          sh "sudo ci/build.py --nvidiadocker --build --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_binaries"
+        }
+      }
+    }
+  }
+
+  } catch (err) {
+        throw err
+  }
