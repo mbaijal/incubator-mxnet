@@ -567,7 +567,7 @@ nightly_test_binaries() {
     cd docs && make html
     cd ..
     chmod 777 tests/nightly/test_tutorial.py
-    tests/nightly/test_tutorial.py
+    python tests/nightly/test_tutorial.py
 }
 
 # Deploy
