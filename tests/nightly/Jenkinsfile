@@ -60,7 +60,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-RATTest') {
           init_git()
-          sh "sudo ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_rat_check"
+          //sh "sudo ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_rat_check"
         }
       }
     },

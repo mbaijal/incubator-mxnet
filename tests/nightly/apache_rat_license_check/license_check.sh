@@ -43,6 +43,6 @@ sudo rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-task
 sudo rm -y /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
 
 echo "run apache RAT check"
-java -jar apache-rat-0.13-SNAPSHOT.jar -E /home/ubuntu/workspace/NightlyPipeline_onSource/tests/nightly/apache_rat_license_check/.rat-excludes -d /home/ubuntu/workspace/NightlyPipeline_onSource
+java -jar apache-rat-0.13-SNAPSHOT.jar -E /home/ubuntu/workspace/NightlyPipeline_onSource/tests/nightly/apache_rat_license_check/rat-excludes -d /home/ubuntu/workspace/NightlyPipeline_onSource
 
 

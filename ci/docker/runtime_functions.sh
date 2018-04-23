@@ -551,16 +551,19 @@ nightly_test_rat_check() {
 }
 
 nightly_test_compilation_warning() {
+    chmod -R 777 tests/nightly/
     tests/nightly/compilation_warnings/compilation_warnings.sh
 }
 
 # Nightly Tests
 nightly_test_pip_test() {
+    chmod -R 777 tests/nightly/
     tests/jenkins/run_test_pip_installations.sh
 }
 
 # Nightly Tests
 nightly_test_image_classification() {
+    chmod -R 777 tests/nightly/
     tests/nightly/test_image_classification.sh
 }
 
