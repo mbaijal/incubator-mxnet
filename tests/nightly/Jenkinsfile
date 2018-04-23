@@ -63,17 +63,17 @@ try {
           sh "sudo ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_rat_check"
         }
       }
-    }
+    },
     'CompilationWarnings: GPU': {
-      node('mxnetlinux-cpu') {
+      node('mxnetlinux-gpu') {
         ws('workspace/nt-compilationTest') {
           init_git()
           sh "sudo ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_compilation_warning"
         }
       }
-    }
+    },
     'PipTest: GPU': {
-      node('mxnetlinux-cpu') {
+      node('mxnetlinux-gpu') {
         ws('workspace/nt-pipTest') {
           init_git()
           //sh "sudo ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_pip_test"
