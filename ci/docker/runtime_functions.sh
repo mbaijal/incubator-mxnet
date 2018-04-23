@@ -576,7 +576,6 @@ nightly_test_binaries() {
     python test_tutorial.py
 }
 
-
 # Deploy
 
 deploy_docs() {
