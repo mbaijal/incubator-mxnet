@@ -19,11 +19,11 @@
 
 
 # setup
-export LD_LIBRARY_PATH=`pwd`/`dirname $0`/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-export PYTHONPATH=`pwd`/`dirname $0`/python
+#export LD_LIBRARY_PATH=`pwd`/`dirname $0`/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+#export PYTHONPATH=`pwd`/`dirname $0`/python
 # bc is required by sh2ju.sh
 apt-get install bc
-cd `pwd`/`dirname $0`
+#cd `pwd`/`dirname $0`
 . sh2ju.sh
 
 ## clean last build log
@@ -56,7 +56,7 @@ USE_CUDNN=1
 USE_DIST_KVSTORE=1
 EOF
 
-juLog -name=Build -error=Error build
+#juLog -name=Build -error=Error build
 
 # check if the final evaluation accuracy exceed the threshold
 check_val() {

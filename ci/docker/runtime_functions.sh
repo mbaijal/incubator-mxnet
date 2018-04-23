@@ -552,28 +552,7 @@ nightly_test_source() {
 
 # Nightly Tests
 nightly_test_binaries() {
-    set -ex
-    sudo apt-get update && sudo apt-get install -y maven default-jdk
-    wget http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.deb && sudo dpkg -i scala-2.11.8.deb && rm scala-2.11.8.deb;
-    sudo apt-get -y install ipython ipython-notebook
-    sudo apt-get -y install doxygen
-    sudo apt-get -y install pandoc
-    sudo apt-get -y install python-tk
-    sudo apt-get -y install python-opencv
-    sudo python -m pip install -U pip
-    sudo pip install sphinx==1.5.6 CommonMark==0.5.4 breathe mock==1.0.1 recommonmark==0.4.0 pypandoc
-    sudo pip install --upgrade requests
-    sudo pip install jupyter
-    sudo pip install graphviz
-    sudo pip install matplotlib
-    sudo pip install future
-    cd docs && make html
-    cd ..
-    cd python && pip install -e .
-    cd ..
-    chmod -R 777 tests/nightly/
-    cd tests/nightly
-    python test_tutorial.py
+    tests/nightly/test_image_classification.sh
 }
 
 # Deploy
