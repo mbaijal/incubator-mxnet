@@ -22,12 +22,12 @@
 #export LD_LIBRARY_PATH=`pwd`/`dirname $0`/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 #export PYTHONPATH=`pwd`/`dirname $0`/python
 # bc is required by sh2ju.sh
-apt-get install bc
+#apt-get install bc
 #cd `pwd`/`dirname $0`
-. sh2ju.sh
+#. sh2ju.sh
 
 ## clean last build log
-juLogClean
+#juLogClean
 
 if [ -f $(which nvidia-smi) ]; then
     if [ $# -eq 1 ]; then
@@ -89,6 +89,7 @@ test_lenet() {
        check_val $desired_accuracy
     done
 }
-juLog -name=Python.Lenet.Mnist -error=FAIL test_lenet
+
+test_lenet
 
 exit $errors
