@@ -63,7 +63,7 @@ check_val() {
     expected=$1
     pass="Final validation >= $expected, PASS"
     fail="Final validation < $expected, FAIL"
-    python ../../tools/parse_log.py log --format none | tail -n1 | \
+    python tools/parse_log.py log --format none | tail -n1 | \
         awk "{ if (\$3~/^[.0-9]+$/ && \$3 > $expected) print \"$pass\"; else print \"$fail\"}"
     rm -f log
 }
