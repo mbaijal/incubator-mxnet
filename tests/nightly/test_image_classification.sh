@@ -48,7 +48,7 @@ build() {
     return $?
 }
 
-cp ../../make/config.mk ../..
+cp make/config.mk ../..
 cat >>../../config.mk <<EOF
 USE_CUDA=1
 USE_CUDA_PATH=/usr/local/cuda
@@ -68,7 +68,7 @@ check_val() {
     rm -f log
 }
 
-example_dir=../../example/image-classification
+example_dir=example/image-classification
 # python: lenet + mnist
 test_lenet() {
     optimizers="adam sgd adagrad"
