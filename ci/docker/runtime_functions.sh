@@ -543,15 +543,24 @@ test_ubuntu_cpu_python3() {
 }
 
 # Nightly Tests
-nightly_test_source() {
+nightly_test_rat_check() {
     set -ex
     chmod -R 777 tests/nightly/
     chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
     tests/nightly/apache_rat_license_check/license_check.sh
 }
 
+nightly_test_compilation_warning() {
+    tests/nightly/compilation_warnings/compilation_warnings.sh
+}
+
 # Nightly Tests
-nightly_test_binaries() {
+nightly_test_pip_test() {
+    tests/jenkins/run_test_pip_installations.sh
+}
+
+# Nightly Tests
+nightly_test_image_classification() {
     tests/nightly/test_image_classification.sh
 }
 

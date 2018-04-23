@@ -17,16 +17,30 @@
 // under the License.
 
 
-// Jenkins pipeline
-// See documents at https://jenkins.io/doc/book/pipeline/jenkinsfile/
-// Runs nightly tests which run on the source
+mx_lib = 'lib/libmxnet.so, lib/libmxnet.a, 3rdparty/dmlc-core/libdmlc.a, 3rdparty/nnvm/lib/libnnvm.a'
+
+// pack libraries for later use
+def pack_lib(name, libs=mx_lib) {
+  sh """
+echo "Packing ${libs} into ${name}"
+echo ${libs} | sed -e 's/,/ /g' | xargs md5sum
+"""
+  stash includes: libs, name: name
+}
+
+// unpack libraries saved before
+def unpack_lib(name, libs=mx_lib) {
+  unstash name
+  sh """
+echo "Unpacked ${libs} from ${name}"
+echo ${libs} | sed -e 's/,/ /g' | xargs md5sum
+"""
+}
 
 def init_git() {
   deleteDir()
   retry(5) {
     try {
-      // Make sure wait long enough for api.github.com request quota. Important: Don't increase the amount of
-      // retries as this will increase the amount of requests and worsen the throttling
       timeout(time: 15, unit: 'MINUTES') {
         checkout scm
         sh 'git submodule update --init --recursive'
@@ -41,27 +55,33 @@ def init_git() {
 }
 
 try {
-     stage('SanityCheck'){
-        node("newslave") {
-            //sh "pwd"
-            //sh "ls"
+  stage('NightlyTests'){
+    parallel 'RATCheck: CPU': {
+      node('mxnetlinux-cpu') {
+        ws('workspace/nt-RATTest') {
+          init_git()
+          sh "sudo ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_rat_check"
         }
-     }
-
-     stage('TestDocker'){
-        node("newslave") {
-            init_git()
-            sh "sudo ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_source"
-        }
-     }
-
-     } catch (err) {
-        currentBuild.result = "FAILURE"
-        mail body: "project build error is here: ${env.BUILD_URL}" ,
-        from: 'mxnet-ci@amazon.com',
-        replyTo: 'mxnet-ci@amazon.com',
-        subject: 'project build failed',
-        to: 'mbaijal@amazon.com'
-
-        throw err
+      }
     }
+    'CompilationWarnings: GPU': {
+      node('mxnetlinux-cpu') {
+        ws('workspace/nt-compilationTest') {
+          init_git()
+          sh "sudo ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_compilation_warning"
+        }
+      }
+    }
+    'PipTest: GPU': {
+      node('mxnetlinux-cpu') {
+        ws('workspace/nt-pipTest') {
+          init_git()
+          //sh "sudo ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_pip_test"
+        }
+      }
+    }
+  }
+
+  } catch (err) {
+        throw err
+  }

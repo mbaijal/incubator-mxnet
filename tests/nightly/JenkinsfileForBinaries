@@ -73,7 +73,7 @@ try {
         ws('workspace/nt-tutorialTest') {
           init_git()
           unpack_lib('gpu', mx_lib)
-          sh "sudo ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_binaries"
+          sh "sudo ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_image_classification"
         }
       }
     }
