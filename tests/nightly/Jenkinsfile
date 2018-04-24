@@ -68,7 +68,7 @@ try {
       node('mxnetlinux-gpu') {
         ws('workspace/nt-compilationTest') {
           init_git()
-          sh "sudo ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_compilation_warning"
+          sh "ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_compilation_warning"
         }
       }
     },
