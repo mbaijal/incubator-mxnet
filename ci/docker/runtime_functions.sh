@@ -551,7 +551,7 @@ nightly_test_rat_check() {
 }
 
 nightly_test_compilation_warning() {
-    apt-get install -y libatlas-base-dev
+    apt-get install -y libopenblas-dev
     chmod -R 777 tests/nightly/
     tests/nightly/compilation_warnings/compilation_warnings.sh
 }
