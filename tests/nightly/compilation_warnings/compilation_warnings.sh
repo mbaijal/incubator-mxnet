@@ -31,9 +31,9 @@ runme() {
 	fi
 }
 
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt-get update
-sudo apt-get -y install time g++-5
+add-apt-repository ppa:ubuntu-toolchain-r/test
+apt-get update
+apt-get -y install time g++-5
 runme make clean >/dev/null
 runme mkdir build
 echo "Starting make"
