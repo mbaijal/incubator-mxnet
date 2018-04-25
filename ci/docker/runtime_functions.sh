@@ -555,7 +555,7 @@ nightly_test_compilation_warning() {
     export PYTHONPATH=./python/
     export PATH=/usr/lib:$PATH
     export PATH=/usr/include/atlas:$PATH
-    #chmod -R 777 tests/nightly/
+    chmod -R 777 tests/nightly/
     ./tests/nightly/compilation_warnings/compilation_warnings.sh
 }
 
