@@ -547,7 +547,7 @@ nightly_test_rat_check() {
     set -ex
     chmod -R 777 tests/nightly/
     chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
-    tests/nightly/apache_rat_license_check/license_check.sh
+    ./tests/nightly/apache_rat_license_check/license_check.sh
 }
 
 nightly_test_compilation_warning() {
@@ -555,18 +555,18 @@ nightly_test_compilation_warning() {
     export PYTHONPATH=./python/
     export PATH=/usr/lib:$PATH
     export PATH=/usr/include/atlas:$PATH
-    chmod -R 777 tests/nightly/
-    tests/nightly/compilation_warnings/compilation_warnings.sh
+    #chmod -R 777 tests/nightly/
+    ./tests/nightly/compilation_warnings/compilation_warnings.sh
 }
 
 nightly_test_pip_test() {
     chmod -R 777 tests/nightly/
-    tests/jenkins/run_test_pip_installations.sh
+    ./tests/jenkins/run_test_pip_installations.sh
 }
 
 nightly_test_image_classification() {
     chmod -R 777 tests/nightly/
-    tests/nightly/test_image_classification.sh
+    ./tests/nightly/test_image_classification.sh
 }
 
 # Deploy
