@@ -547,6 +547,7 @@ nightly_test_rat_check() {
     set -ex
     chmod -R 777 tests/nightly/
     chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
+    chmod 777 tests/nightly/apache_rat_license_check/rat-excludes
     ./tests/nightly/apache_rat_license_check/license_check.sh
 }
 
