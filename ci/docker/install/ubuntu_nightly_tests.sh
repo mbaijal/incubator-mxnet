@@ -24,3 +24,5 @@ set -ex
 apt-get update
 add-apt-repository ppa:ubuntu-toolchain-r/test
 apt-get -y install time g++-5
+apt-get install maven -y #>/dev/null
+apt-get install subversion -y

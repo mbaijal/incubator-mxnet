@@ -18,11 +18,11 @@
 # under the License.
 
 
-echo "install maven"
-sudo apt-get install maven -y #>/dev/null
+#echo "install maven"
+#sudo apt-get install maven -y #>/dev/null
 
-echo "install svn"
-sudo apt-get install subversion -y #>/dev/null
+#echo "install svn"
+#sudo apt-get install subversion -y #>/dev/null
 
 echo "download RAT"
 svn co http://svn.apache.org/repos/asf/creadur/rat/trunk/ #>/dev/null
@@ -36,11 +36,11 @@ mvn -Dmaven.test.skip=true install #>/dev/null
 echo "build success, cd into target"
 cd apache-rat/target
 
-sudo chmod -R 777 /home/ubuntu/workspace/NightlyPipeline_onSource/trunk
-sudo chmod -R 777 /work/mxnet/trunk/apache-rat-tasks
-sudo rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
-sudo rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-bad-configurations.xml
-sudo rm -y /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+#chmod -R 777 /home/ubuntu/workspace/NightlyPipeline_onSource/trunk
+#chmod -R 777 /work/mxnet/trunk/apache-rat-tasks
+#rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+#rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-bad-configurations.xml
+#rm -y /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
 
 echo "run apache RAT check"
 java -jar apache-rat-0.13-SNAPSHOT.jar -E /home/ubuntu/workspace/NightlyPipeline_onSource/tests/nightly/apache_rat_license_check/rat-excludes -d /home/ubuntu/workspace/NightlyPipeline_onSource
