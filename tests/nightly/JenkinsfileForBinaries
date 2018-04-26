@@ -60,7 +60,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/build-gpu') {
           init_git()
-          sh "sudo ci/build.py --platform ubuntu_build_cuda /work/runtime_functions.sh build_ubuntu_gpu_cuda91_cudnn7"
+          sh "ci/build.py --platform ubuntu_build_cuda /work/runtime_functions.sh build_ubuntu_gpu_cuda91_cudnn7"
           pack_lib('gpu', mx_lib)
         }
       }
@@ -73,7 +73,7 @@ try {
         ws('workspace/nt-tutorialTest') {
           init_git()
           unpack_lib('gpu', mx_lib)
-          sh "sudo ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_image_classification"
+          sh "ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_image_classification"
         }
       }
     }
