@@ -47,7 +47,7 @@ RUN /work/ubuntu_caffe.sh
 COPY install/ubuntu_adduser.sh /work/
 RUN /work/ubuntu_adduser.sh
 COPY install/ubuntu_nightly_test.sh /work/
-RUN /work/ubuntu_nightly_test.sh
+RUN /work/ubuntu_nightly_tests.sh
 
 COPY runtime_functions.sh /work/
 
