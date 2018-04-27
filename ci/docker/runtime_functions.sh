@@ -577,6 +577,11 @@ nightly_test_image_classification() {
     ./tests/nightly/test_image_classification.sh
 }
 
+nightly_test_KVStore_singleNode() {
+    chmod -R 777 tests/nightly/
+    ./tests/nightly/test_kvstore.py
+}
+
 nightly_test_amalgamation1() {
     set -ex
     # Amalgamation can not be run with -j nproc
