@@ -580,7 +580,7 @@ nightly_test_image_classification() {
 nightly_test_KVStore_singleNode() {
     chmod -R 777 tests/nightly/
     cd /work/mxnet/python
-    pip3 install -e .
+    pip install -e .
     cd /work/mxnet
     python tests/nightly/test_kvstore.py
 }
@@ -618,6 +618,14 @@ nightly_test_amalgamation5() {
     # Amalgamation can not be run with -j nproc
     make -C amalgamation/ clean
     make -C amalgamation/ USE_BLAS=atlas DISABLE_OPENMP=0
+}
+
+nightly_test_javascript() {
+    set -ex
+    export LLVM='/emscripten-fastcomp/build/bin'
+    # Amalgamation can not be run with -j nproc
+    make -C amalgamation/ clean
+    make -C amalgamation/ libmxnet_predict.js MIN=1 EMCC=/emscripten/emcc
 }
 
 # Deploy
