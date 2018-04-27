@@ -579,6 +579,7 @@ nightly_test_image_classification() {
 
 nightly_test_KVStore_singleNode() {
     chmod -R 777 tests/nightly/
+    export PYTHONPATH=./python/
     cd /work/mxnet/python
     pip install -e .
     cd /work/mxnet
