@@ -92,7 +92,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-pipTest') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh build_ubuntu_amalgamation"
+          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation1"
         }
       }
     }
