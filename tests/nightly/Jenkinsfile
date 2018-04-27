@@ -127,7 +127,16 @@ try {
           sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation5"
         }
       }
+    },
+    'MXNetJS: CPU': {
+      node('mxnetlinux-cpu') {
+        ws('workspace/nt-mxnetjs') {
+          init_git()
+          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_javascript"
+        }
+      }
     }
+
 
   }
 

@@ -622,7 +622,6 @@ nightly_test_amalgamation5() {
 
 nightly_test_javascript() {
     set -ex
-    export LLVM='/emscripten-fastcomp/build/bin'
     # Amalgamation can not be run with -j nproc
     make -C amalgamation/ clean
     make -C amalgamation/ libmxnet_predict.js MIN=1 EMCC=/emscripten/emcc

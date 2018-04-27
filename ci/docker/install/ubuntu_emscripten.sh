@@ -21,8 +21,14 @@
 # the whole docker cache for the image
 
 set -ex
-apt-get update
-add-apt-repository ppa:ubuntu-toolchain-r/test
-apt-get -y install time g++-5
-apt-get install maven -y #>/dev/null
-apt-get install subversion -y
+
+apt-get install nodejs unzip
+git clone https://github.com/kripken/emscripten.git
+git clone https://github.com/kripken/emscripten-fastcomp
+cd emscripten-fastcomp
+git clone https://github.com/kripken/emscripten-fastcomp-clang tools/clang
+mkdir build && cd build
+
+make .. -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86;JSBackend" \
+-DLLVM_INCLUDE_EXAMPLES=OFF -DLLVM_INCLUDE_TESTS=OFF -DCLANG_INCLUDE_EXAMPLES=OFF \
+-DCLANG_INCLUDE_TESTS=OFF && make
