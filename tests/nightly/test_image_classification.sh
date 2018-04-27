@@ -18,17 +18,6 @@
 # under the License.
 
 
-# setup
-#export LD_LIBRARY_PATH=`pwd`/`dirname $0`/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-#export PYTHONPATH=`pwd`/`dirname $0`/python
-# bc is required by sh2ju.sh
-#apt-get install bc
-#cd `pwd`/`dirname $0`
-#. sh2ju.sh
-
-## clean last build log
-#juLogClean
-
 if [ -f $(which nvidia-smi) ]; then
     if [ $# -eq 1 ]; then
         num_gpus=$1
@@ -40,23 +29,6 @@ if [ -f $(which nvidia-smi) ]; then
 else
     device_arg=""
 fi
-
-# build
-build() {
-    make -C ../.. clean
-    make -C ../.. -j8
-    return $?
-}
-
-cp make/config.mk ../..
-cat >>../../config.mk <<EOF
-USE_CUDA=1
-USE_CUDA_PATH=/usr/local/cuda
-USE_CUDNN=1
-USE_DIST_KVSTORE=1
-EOF
-
-#juLog -name=Build -error=Error build
 
 # check if the final evaluation accuracy exceed the threshold
 check_val() {

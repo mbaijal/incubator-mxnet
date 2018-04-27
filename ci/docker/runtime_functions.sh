@@ -579,6 +579,9 @@ nightly_test_image_classification() {
 
 nightly_test_KVStore_singleNode() {
     chmod -R 777 tests/nightly/
+    cd /work/mxnet/python
+    pip3 install -e .
+    cd /work/mxnet
     python tests/nightly/test_kvstore.py
 }
 
