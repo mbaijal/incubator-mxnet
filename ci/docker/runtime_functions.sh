@@ -577,6 +577,41 @@ nightly_test_image_classification() {
     ./tests/nightly/test_image_classification.sh
 }
 
+nightly_test_amalgamation1() {
+    set -ex
+    # Amalgamation can not be run with -j nproc
+    make -C amalgamation/ clean
+    make -C amalgamation/ USE_BLAS=atlas
+}
+
+nightly_test_amalgamation2() {
+    set -ex
+    # Amalgamation can not be run with -j nproc
+    make -C amalgamation/ clean
+    make -C amalgamation/ USE_BLAS=atlas MIN=1
+}
+
+nightly_test_amalgamation3() {
+    set -ex
+    # Amalgamation can not be run with -j nproc
+    make -C amalgamation/ clean
+    make -C amalgamation/ USE_BLAS=atlas MSHADOW_USE_MKL=1
+}
+
+nightly_test_amalgamation4() {
+    set -ex
+    # Amalgamation can not be run with -j nproc
+    make -C amalgamation/ clean
+    make -C amalgamation/ USE_BLAS=atlas MSHADOW_USE_CUDA=1
+}
+
+nightly_test_amalgamation5() {
+    set -ex
+    # Amalgamation can not be run with -j nproc
+    make -C amalgamation/ clean
+    make -C amalgamation/ USE_BLAS=atlas DISABLE_OPENMP=0
+}
+
 # Deploy
 
 deploy_docs() {

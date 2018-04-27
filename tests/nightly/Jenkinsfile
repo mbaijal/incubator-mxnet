@@ -60,7 +60,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-RATTest') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_rat_check"
+          //sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_rat_check"
         }
       }
     },
@@ -68,15 +68,15 @@ try {
       node('mxnetlinux-gpu') {
         ws('workspace/nt-compilationTest') {
           init_git()
-          sh "ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_compilation_warning"
+          //sh "ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_compilation_warning"
         }
       }
     },
     'InstallationGuide: GPU': {
       node('mxnetlinux-gpu') {
-        ws('workspace/nt-pipTest') {
+        ws('workspace/nt-Installation') {
           init_git()
-          sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation"
+          //sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation"
         }
       }
     },
@@ -85,6 +85,14 @@ try {
         ws('workspace/nt-pipTest') {
           init_git()
           //sh "ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_pip_test"
+        }
+      }
+    },
+    'Amalgamation1: CPU': {
+      node('mxnetlinux-cpu') {
+        ws('workspace/nt-pipTest') {
+          init_git()
+          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh build_ubuntu_amalgamation"
         }
       }
     }

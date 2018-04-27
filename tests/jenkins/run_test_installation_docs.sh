@@ -266,13 +266,13 @@ echo
 echo "### Testing Virtualenv ###"
 echo "${virtualenv_commands}"
 echo
-docker run --rm ubuntu:14.04 bash -c "${virtualenv_commands}"
+#meghna docker run --rm ubuntu:14.04 bash -c "${virtualenv_commands}"
 
 echo
 echo "### Testing Pip ###"
 echo "${pip_commands}"
 echo
-docker run --rm ubuntu:14.04 bash -c "${pip_commands}"
+#meghna docker run --rm ubuntu:14.04 bash -c "${pip_commands}"
 
 echo
 echo "### Testing Docker ###"
@@ -284,7 +284,7 @@ echo
 echo "### Testing Build From Source ###"
 echo "${buildfromsource_commands}"
 echo
-docker run --rm ubuntu:14.04 bash -c "${buildfromsource_commands}"
+#meghna docker run --rm ubuntu:14.04 bash -c "${buildfromsource_commands}"
 
 #########################LINUX-PYTHON-GPU###########################
 
@@ -305,13 +305,13 @@ echo
 echo "### Testing Virtualenv ###"
 echo "${virtualenv_commands}"
 echo
-nvidia-docker run --rm mxnet/base-cuda9 bash -c "${virtualenv_commands}"
+#meghna nvidia-docker run --rm mxnet/base-cuda9 bash -c "${virtualenv_commands}"
 
 echo
 echo "### Testing Pip ###"
 echo "${pip_commands}"
 echo
-nvidia-docker run --rm mxnet/base-cuda9 bash -c "${pip_commands}"
+#meghna nvidia-docker run --rm mxnet/base-cuda9 bash -c "${pip_commands}"
 
 echo
 echo "### Testing Docker ###"
@@ -323,4 +323,9 @@ echo
 echo "### Testing Build From Source ###"
 echo "${buildfromsource_commands}"
 echo
-nvidia-docker run --rm mxnet/base-cuda9 bash -c "${buildfromsource_commands}"
+#meghna nvidia-docker run --rm mxnet/base-cuda9 bash -c "${buildfromsource_commands}"
+
+func_virtual_commands()
+{
+  echo ${virtualenv_commands}
+}
