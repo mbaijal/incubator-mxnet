@@ -68,9 +68,9 @@ try {
   }
 
   stage('NightlyTests'){
-    parallel 'UbuntuTutorial: GPU': {
+    parallel 'ImageClassification: GPU': {
       node('mxnetlinux-gpu') {
-        ws('workspace/nt-tutorialTest') {
+        ws('workspace/nt-ImageClassificationTest') {
           init_git()
           unpack_lib('gpu', mx_lib)
           sh "ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_image_classification"

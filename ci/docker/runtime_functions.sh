@@ -579,7 +579,7 @@ nightly_test_image_classification() {
 
 nightly_test_KVStore_singleNode() {
     chmod -R 777 tests/nightly/
-    ./tests/nightly/test_kvstore.py
+    python tests/nightly/test_kvstore.py
 }
 
 nightly_test_amalgamation1() {
