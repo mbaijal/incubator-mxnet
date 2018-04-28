@@ -132,7 +132,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-mxnetjs') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_javascript"
+          sh "ci/build.py --platform ubuntu_emscripten /work/runtime_functions.sh nightly_test_javascript"
         }
       }
     }
