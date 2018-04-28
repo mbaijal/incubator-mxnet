@@ -92,7 +92,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-amalgamation1') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation1"
+          //sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation1"
         }
       }
     },
@@ -100,7 +100,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-amalgamation2') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation2"
+          //sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation2"
         }
       }
     },
@@ -108,7 +108,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-amalgamation3') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation3"
+          //sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation3"
         }
       }
     },
@@ -116,7 +116,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-amalgamation4') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation4"
+          //sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation4"
         }
       }
     },
@@ -124,7 +124,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-amalgamation5') {
           init_git()
-          sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation5"
+          //sh "ci/build.py --platform ubuntu_cpu /work/runtime_functions.sh nightly_test_amalgamation5"
         }
       }
     },
