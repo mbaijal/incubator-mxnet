@@ -627,11 +627,12 @@ nightly_test_javascript() {
     #make -C amalgamation/ clean
     #make -C amalgamation/ libmxnet_predict.js MIN=1 EMCC=/emscripten/emcc
 
-    export LLVM='/emscripten-fastcomp/build/bin'
+    export EMCC='/emscripten-fastcomp/build/bin'
     cd amalgamation
     make clean libmxnet_predict.js MIN=1
 }
 
+# Deploy
 # Deploy
 
 deploy_docs() {
