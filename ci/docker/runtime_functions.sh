@@ -626,8 +626,8 @@ nightly_test_javascript() {
     # Amalgamation can not be run with -j nproc
     #make -C amalgamation/ clean
     #make -C amalgamation/ libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
-
     export LLVM=/work/deps/emscripten-fastcomp/build/bin
+    sed -i "s/LLVM_ROOT = os.path.expanduser(os.getenv('LLVM', '/usr/bin')) # directory/LLVM_ROOT = os.path.expanduser('/work/deps/emscripten-fastcomp/build/bin')/" ~/.emscripten
     cd amalgamation
     make clean libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
 }
