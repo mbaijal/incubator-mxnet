@@ -625,7 +625,7 @@ nightly_test_javascript() {
     set -ex
     SRC="LLVM_ROOT = os.path.expanduser(os.getenv('LLVM', '/usr/bin')) # directory"
     DST="LLVM_ROOT = os.path.expanduser('/work/deps/emscripten-fastcomp/build/bin')"
-    sed -i "s/$SRC/$DST/g" ~/.emscripten
+    sed -i -e 's/$SRC/$DST/g' ~/.emscripten
 
     export LLVM=/work/deps/emscripten-fastcomp/build/bin
     cd amalgamation
