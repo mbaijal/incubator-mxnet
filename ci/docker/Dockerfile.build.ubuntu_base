@@ -25,7 +25,7 @@ ARG USER_ID=1
 
 WORKDIR /work/deps
 
-RUN apt-get update
+RUN apt-get update && apt-get -y install sudo
 
 COPY runtime_functions.sh /work/
 
