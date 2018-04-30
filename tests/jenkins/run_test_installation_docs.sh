@@ -266,7 +266,7 @@ echo
 echo "### Testing Virtualenv ###"
 echo "${virtualenv_commands}" > "$filewithcommands"
 echo
-#sed -e s/sudo//g -i ./filewithcommands.sh
+sed -e s/sudo//g -i ./filewithcommands.sh
 #meghna docker run --rm ubuntu:14.04 bash -c "${virtualenv_commands}"
 
 echo
