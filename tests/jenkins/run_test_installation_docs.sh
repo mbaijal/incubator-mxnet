@@ -261,7 +261,7 @@ LINUX_PYTHON_CPU_START_LINENO=$(grep -n "START - Linux Python CPU Installation I
 LINUX_PYTHON_CPU_END_LINENO=$(grep -n "END - Linux Python CPU Installation Instructions" "${FILE}" | cut -d : -f 1)
 
 set_instruction_set ${LINUX_PYTHON_CPU_START_LINENO} ${LINUX_PYTHON_CPU_END_LINENO}
-filewithcommands=/tests/nightly/filewithcommands.sh
+filewithcommands=./filewithcommands.sh
 echo
 echo "### Testing Virtualenv ###"
 echo "${virtualenv_commands}" > "$filewithcommands"
