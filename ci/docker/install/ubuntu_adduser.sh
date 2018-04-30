@@ -29,6 +29,7 @@ then
     # -no-log-init required due to https://github.com/moby/moby/issues/5419
     useradd -m --no-log-init --uid $USER_ID --system jenkins_slave 
     usermod -aG sudo jenkins_slave
+    usermod -aG sudo ubuntu
 
     # By default, docker creates all WORK_DIRs with root owner    
     mkdir /work/mxnet    
