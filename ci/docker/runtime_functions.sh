@@ -625,10 +625,10 @@ nightly_test_javascript() {
     set -ex
     SRC="LLVM_ROOT = os.path.expanduser(os.getenv('LLVM', '/usr/bin')) # directory"
     DST="LLVM_ROOT = os.path.expanduser('/work/deps/emscripten-fastcomp/build/bin')"
-    sed -i -e 's/$SRC/$DST/g' ~/.emscripten
+    #sed -i -e 's/$SRC/$DST/g' ~/.emscripten
 
-    export LLVM=/work/deps/emscripten-fastcomp/build/bin
     cd amalgamation
+    export LLVM=/work/deps/emscripten-fastcomp/build/bin
     make clean libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
 }
 

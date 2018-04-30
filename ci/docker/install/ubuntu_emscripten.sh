@@ -33,3 +33,5 @@ mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86;JSBackend" \
 -DLLVM_INCLUDE_EXAMPLES=OFF -DLLVM_INCLUDE_TESTS=OFF -DCLANG_INCLUDE_EXAMPLES=OFF \
 -DCLANG_INCLUDE_TESTS=OFF && make
+
+export LLVM=/work/deps/emscripten-fastcomp/build/bin
