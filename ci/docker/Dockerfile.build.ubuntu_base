@@ -21,6 +21,8 @@
 
 FROM nvidia/cuda:9.1-cudnn7-devel
 
+ARG USER_ID=0
+
 WORKDIR /work/deps
 
 RUN apt-get update && apt-get -y install sudo
