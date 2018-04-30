@@ -567,6 +567,13 @@ nightly_test_installation() {
 
 }
 
+nightly_test_installation-a() {
+    set -ex
+    chmod -R 777 tests/nightly/
+    ./tests/nightly/filewithcommands.sh
+
+}
+
 nightly_test_pip_test() {
     chmod -R 777 tests/nightly/
     ./tests/jenkins/run_test_pip_installations.sh

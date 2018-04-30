@@ -261,7 +261,7 @@ LINUX_PYTHON_CPU_START_LINENO=$(grep -n "START - Linux Python CPU Installation I
 LINUX_PYTHON_CPU_END_LINENO=$(grep -n "END - Linux Python CPU Installation Instructions" "${FILE}" | cut -d : -f 1)
 
 set_instruction_set ${LINUX_PYTHON_CPU_START_LINENO} ${LINUX_PYTHON_CPU_END_LINENO}
-filewithcommands=./filewithcommands.sh
+filewithcommands=/tests/nightly/filewithcommands.sh
 echo
 echo "### Testing Virtualenv ###"
 echo "${virtualenv_commands}" > "$filewithcommands"
@@ -278,7 +278,7 @@ echo
 echo "### Testing Docker ###"
 echo "${docker_commands}"
 echo
-eval ${docker_commands}
+#meghna eval ${docker_commands}
 
 echo
 echo "### Testing Build From Source ###"
@@ -317,7 +317,7 @@ echo
 echo "### Testing Docker ###"
 echo "${docker_commands}"
 echo
-eval ${docker_commands}
+#meghna eval ${docker_commands}
 
 echo
 echo "### Testing Build From Source ###"

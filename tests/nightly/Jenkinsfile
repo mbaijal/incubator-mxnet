@@ -76,7 +76,9 @@ try {
       node('mxnetlinux-gpu') {
         ws('workspace/nt-Installation') {
           init_git()
-          //sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation"
+          sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation"
+          sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation-a"
+          filewithcommands.sh
         }
       }
     },
@@ -132,7 +134,7 @@ try {
       node('mxnetlinux-cpu') {
         ws('workspace/nt-mxnetjs') {
           init_git()
-          sh "ci/build.py --platform ubuntu_emscripten /work/runtime_functions.sh nightly_test_javascript"
+          //sh "ci/build.py --platform ubuntu_emscripten /work/runtime_functions.sh nightly_test_javascript"
         }
       }
     }
