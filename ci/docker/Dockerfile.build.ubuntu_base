@@ -25,6 +25,8 @@ ARG USER_ID=0
 
 WORKDIR /work/deps
 
+RUN apt-get update && apt-get -y install sudo
+
 COPY runtime_functions.sh /work/
 
 WORKDIR /work/mxnet
