@@ -569,7 +569,7 @@ nightly_test_installation() {
 
 nightly_test_installation-a() {
     set -ex
-    chmod -R 777 tests/nightly/
+    chmod -R 777 ./filewithcommands.sh
     ./filewithcommands.sh
 
 }
