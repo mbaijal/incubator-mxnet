@@ -562,19 +562,6 @@ nightly_test_compilation_warning() {
 
 nightly_test_installation() {
     set -ex
-    chmod -R 777 tests/nightly/
-    ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686
-
-}
-
-nightly_test_installation-a() {
-    set -ex
-    chmod -R 777 ./filewithcommands.sh
-    ./filewithcommands.sh
-
-}
-nightly_test_installation-b() {
-    set -ex
     chmod -R 777 ./tests/jenkins/run_test_installation_docs.sh
     source ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686; ${1}
 
