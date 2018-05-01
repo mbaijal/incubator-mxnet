@@ -329,14 +329,14 @@ ubuntu_python_gpu_virtualenv()
 
 }
 
-ubuntu_python_gpu_virtualenv()
+ubuntu_python_gpu_pip()
 {
     echo
     echo "### Testing Pip ###"
     echo "${pip_commands}"
     echo
     eval ${pip_commands}
-    echo "ubuntu_python_gpu_virtualenv: MXNet Installed Successfully"
+    echo "ubuntu_python_gpu_pip: MXNet Installed Successfully"
 
 }
 
