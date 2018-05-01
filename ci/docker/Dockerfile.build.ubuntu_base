@@ -25,6 +25,9 @@ ARG USER_ID=1000
 
 WORKDIR /work/deps
 
+COPY install/ubuntu_adduser.sh /work/
+RUN /work/ubuntu_adduser.sh
+
 RUN apt-get update && apt-get -y install sudo
 
 COPY runtime_functions.sh /work/
