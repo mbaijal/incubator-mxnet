@@ -575,8 +575,8 @@ nightly_test_installation-a() {
 }
 nightly_test_installation-b() {
     set -ex
-    chmod -R 777 tests/jenkins/
-    source /tests/jenkins/run_test_installation_docs.sh; ubuntu_python_cpu_virtualenv
+    chmod -R 777 ./tests/jenkins/run_test_installation_docs.sh
+    source ./tests/jenkins/run_test_installation_docs.sh; ubuntu_python_cpu_virtualenv
 
 }
 
