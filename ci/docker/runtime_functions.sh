@@ -586,11 +586,11 @@ nightly_test_KVStore_singleNode() {
     python tests/nightly/test_kvstore.py
 }
 
-nightly_test_amalgamation1() {
+nightly_test_amalgamation() {
     set -ex
     # Amalgamation can not be run with -j nproc
     make -C amalgamation/ clean
-    make -C amalgamation/ USE_BLAS=atlas
+    make -C amalgamation/ ${1} ${2}
 }
 
 nightly_test_amalgamation2() {
