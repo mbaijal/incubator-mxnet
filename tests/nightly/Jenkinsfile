@@ -77,7 +77,11 @@ try {
         ws('workspace/nt-Installation') {
           init_git()
           //sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation"
-          sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation-b ubuntu_python_cpu_virtualenv"
+          sh "sudo ci/build.py --platform ubuntu_base_cpu /work/runtime_functions.sh nightly_test_installation-b ubuntu_python_cpu_virtualenv"
+          sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation-b ubuntu_python_gpu_source"
+
+
+
         }
       }
     },
