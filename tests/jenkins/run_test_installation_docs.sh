@@ -176,7 +176,7 @@ if (( $# < 1 )); then
     echo ""
     exit 1
 fi
-FILE=${1}
+FILE="docs/install/index.md"
 
 # get all line numbers with "```" signifying start or end of source section and put them in an array
 SOURCE_REGEX="\`\`\`"
