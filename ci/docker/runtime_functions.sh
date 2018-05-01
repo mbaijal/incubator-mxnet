@@ -573,6 +573,12 @@ nightly_test_installation-a() {
     ./filewithcommands.sh
 
 }
+nightly_test_installation-b() {
+    set -ex
+    chmod -R 777 ./filewithcommands.sh
+    ./tests/jenkins/run_test_installation_docs.sh ubuntu_python_cpu_virtualenv docs/install/index.md 1 1686
+
+}
 
 nightly_test_pip_test() {
     chmod -R 777 tests/nightly/

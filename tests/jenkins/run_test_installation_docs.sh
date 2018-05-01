@@ -261,13 +261,17 @@ LINUX_PYTHON_CPU_START_LINENO=$(grep -n "START - Linux Python CPU Installation I
 LINUX_PYTHON_CPU_END_LINENO=$(grep -n "END - Linux Python CPU Installation Instructions" "${FILE}" | cut -d : -f 1)
 
 set_instruction_set ${LINUX_PYTHON_CPU_START_LINENO} ${LINUX_PYTHON_CPU_END_LINENO}
-filewithcommands=./filewithcommands.sh
-echo
-echo "### Testing Virtualenv ###"
-echo "${virtualenv_commands}" > "$filewithcommands"
-echo
-#sed -e s/sudo//g -i ./filewithcommands.sh
-#meghna docker run --rm ubuntu:14.04 bash -c "${virtualenv_commands}"
+
+ubuntu_python_cpu_virtualenv()
+{
+    filewithcommands=./filewithcommands.sh
+    echo
+    echo "### Testing Virtualenv ###"
+    echo "${virtualenv_commands}" #> "$filewithcommands"
+    echo
+    #sed -e s/sudo//g -i ./filewithcommands.sh
+    eval ${virtualenv_commands}
+}
 
 echo
 echo "### Testing Pip ###"
