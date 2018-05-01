@@ -593,34 +593,6 @@ nightly_test_amalgamation() {
     make -C amalgamation/ ${1} ${2}
 }
 
-nightly_test_amalgamation2() {
-    set -ex
-    # Amalgamation can not be run with -j nproc
-    make -C amalgamation/ clean
-    make -C amalgamation/ USE_BLAS=atlas MIN=1
-}
-
-nightly_test_amalgamation3() {
-    set -ex
-    # Amalgamation can not be run with -j nproc
-    make -C amalgamation/ clean
-    make -C amalgamation/ USE_BLAS=atlas MSHADOW_USE_MKL=1
-}
-
-nightly_test_amalgamation4() {
-    set -ex
-    # Amalgamation can not be run with -j nproc
-    make -C amalgamation/ clean
-    make -C amalgamation/ USE_BLAS=atlas MSHADOW_USE_CUDA=1
-}
-
-nightly_test_amalgamation5() {
-    set -ex
-    # Amalgamation can not be run with -j nproc
-    make -C amalgamation/ clean
-    make -C amalgamation/ USE_BLAS=atlas DISABLE_OPENMP=0
-}
-
 nightly_test_javascript() {
     set -ex
     SRC="LLVM_ROOT = os.path.expanduser(os.getenv('LLVM', '/usr/bin')) # directory"
