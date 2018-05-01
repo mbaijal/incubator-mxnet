@@ -562,7 +562,6 @@ nightly_test_compilation_warning() {
 
 nightly_test_installation() {
     set -ex
-    whoami
     chmod -R 777 tests/nightly/
     ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686
 
@@ -570,7 +569,6 @@ nightly_test_installation() {
 
 nightly_test_installation-a() {
     set -ex
-    whoami
     chmod -R 777 ./filewithcommands.sh
     ./filewithcommands.sh
 
