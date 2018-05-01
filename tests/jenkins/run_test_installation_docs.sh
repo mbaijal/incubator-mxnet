@@ -264,7 +264,6 @@ set_instruction_set ${LINUX_PYTHON_CPU_START_LINENO} ${LINUX_PYTHON_CPU_END_LINE
 
 ubuntu_python_cpu_virtualenv()
 {
-    filewithcommands=./filewithcommands.sh
     echo
     echo "### Testing Virtualenv ###"
     echo "${virtualenv_commands}" #> "$filewithcommands"
@@ -273,23 +272,32 @@ ubuntu_python_cpu_virtualenv()
     eval ${virtualenv_commands}
 }
 
-echo
-echo "### Testing Pip ###"
-echo "${pip_commands}"
-echo
-#meghna docker run --rm ubuntu:14.04 bash -c "${pip_commands}"
+ubuntu_python_cpu_pip()
+{
+    echo
+    echo "### Testing Pip ###"
+    echo "${pip_commands}"
+    echo
+    eval ${pip_commands}
+}
 
-echo
-echo "### Testing Docker ###"
-echo "${docker_commands}"
-echo
-#meghna eval ${docker_commands}
+ubuntu_python_cpu_docker()
+{
+    echo
+    echo "### Testing Docker ###"
+    echo "${docker_commands}"
+    echo
+    eval ${docker_commands}
+}
 
-echo
-echo "### Testing Build From Source ###"
-echo "${buildfromsource_commands}"
-echo
-#meghna docker run --rm ubuntu:14.04 bash -c "${buildfromsource_commands}"
+ubuntu_python_cpu_source()
+{
+    echo
+    echo "### Testing Build From Source ###"
+    echo "${buildfromsource_commands}"
+    echo
+    eval ${buildfromsource_commands}
+}
 
 #########################LINUX-PYTHON-GPU###########################
 
@@ -304,31 +312,41 @@ LINUX_PYTHON_GPU_END_LINENO=$(grep -n "END - Linux Python GPU Installation Instr
 set_instruction_set ${LINUX_PYTHON_GPU_START_LINENO} ${LINUX_PYTHON_GPU_END_LINENO}
 
 
-# mxnet/base-cuda9 is a simple Docker Image with 'nvidia/cuda:9.0-cudnn7-devel' and 'apt-get install sudo'.
+ubuntu_python_gpu_virtualenv()
+{
+    echo
+    echo "### Testing Virtualenv ###"
+    echo "${virtualenv_commands}"
+    echo
+    eval ${virtualenv_commands}
+}
 
-echo
-echo "### Testing Virtualenv ###"
-echo "${virtualenv_commands}"
-echo
-#meghna nvidia-docker run --rm mxnet/base-cuda9 bash -c "${virtualenv_commands}"
+ubuntu_python_gpu_virtualenv()
+{
+    echo
+    echo "### Testing Pip ###"
+    echo "${pip_commands}"
+    echo
+    eval ${pip_commands}
+}
 
-echo
-echo "### Testing Pip ###"
-echo "${pip_commands}"
-echo
-#meghna nvidia-docker run --rm mxnet/base-cuda9 bash -c "${pip_commands}"
+ubuntu_python_gpu_docker()
+{
+    echo
+    echo "### Testing Docker ###"
+    echo "${docker_commands}"
+    echo
+    eval ${docker_commands}
+}
 
-echo
-echo "### Testing Docker ###"
-echo "${docker_commands}"
-echo
-#meghna eval ${docker_commands}
-
-echo
-echo "### Testing Build From Source ###"
-echo "${buildfromsource_commands}"
-echo
-#meghna nvidia-docker run --rm mxnet/base-cuda9 bash -c "${buildfromsource_commands}"
+ubuntu_python_gpu_source()
+{
+    echo
+    echo "### Testing Build From Source ###"
+    echo "${buildfromsource_commands}"
+    echo
+    eval ${buildfromsource_commands}
+}
 
 func_virtual_commands()
 {
