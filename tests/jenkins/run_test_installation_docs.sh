@@ -270,6 +270,7 @@ ubuntu_python_cpu_virtualenv()
     echo
     #sed -e s/sudo//g -i ./filewithcommands.sh
     eval ${virtualenv_commands}
+    echo "ubuntu_python_cpu_virtualenv: MXNet Installed Successfully"
 }
 
 ubuntu_python_cpu_pip()
@@ -279,6 +280,7 @@ ubuntu_python_cpu_pip()
     echo "${pip_commands}"
     echo
     eval ${pip_commands}
+    echo "ubuntu_python_cpu_pip: MXNet Installed Successfully"
 }
 
 ubuntu_python_cpu_docker()
@@ -288,6 +290,8 @@ ubuntu_python_cpu_docker()
     echo "${docker_commands}"
     echo
     eval ${docker_commands}
+    echo "ubuntu_python_cpu_docker: MXNet Installed Successfully"
+
 }
 
 ubuntu_python_cpu_source()
@@ -297,6 +301,8 @@ ubuntu_python_cpu_source()
     echo "${buildfromsource_commands}"
     echo
     eval ${buildfromsource_commands}
+    echo "ubuntu_python_cpu_source: MXNet Installed Successfully"
+
 }
 
 #########################LINUX-PYTHON-GPU###########################
@@ -319,6 +325,8 @@ ubuntu_python_gpu_virtualenv()
     echo "${virtualenv_commands}"
     echo
     eval ${virtualenv_commands}
+    echo "ubuntu_python_gpu_virtualenv: MXNet Installed Successfully"
+
 }
 
 ubuntu_python_gpu_virtualenv()
@@ -328,6 +336,8 @@ ubuntu_python_gpu_virtualenv()
     echo "${pip_commands}"
     echo
     eval ${pip_commands}
+    echo "ubuntu_python_gpu_virtualenv: MXNet Installed Successfully"
+
 }
 
 ubuntu_python_gpu_docker()
@@ -337,6 +347,8 @@ ubuntu_python_gpu_docker()
     echo "${docker_commands}"
     echo
     eval ${docker_commands}
+    echo "ubuntu_python_gpu_docker: MXNet Installed Successfully"
+
 }
 
 ubuntu_python_gpu_source()
@@ -346,6 +358,8 @@ ubuntu_python_gpu_source()
     echo "${buildfromsource_commands}"
     echo
     eval ${buildfromsource_commands}
+    echo "ubuntu_python_gpu_source: MXNet Installed Successfully"
+
 }
 
 func_virtual_commands()
