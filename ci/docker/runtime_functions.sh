@@ -601,11 +601,11 @@ nightly_test_javascript() {
     export LLVM=/work/deps/emscripten-fastcomp/build/bin
     cd /work/deps/emscripten
     ./emcc
-    sed -i -e 's/$SRC/$DST/g' ~/.emscripten
-    #touch ~/.emscripten
-    ./emcc
+    #sed -i -e 's/$SRC/$DST/g' ~/.emscripten
+    touch ~/.emscripten
+    #./emcc
     echo "did this succeed?"
-    make -C /work/mxnet/amalgamation clean
+    #make -C /work/mxnet/amalgamation clean
     make -C /work/mxnet/amalgamation libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
 }
 
