@@ -78,7 +78,7 @@ try {
           init_git()
           sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_virtualenv"
           sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_pip"
-          sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_docker"
+          //sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_docker"
           sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_source"
         }
       }
@@ -87,18 +87,10 @@ try {
       node('mxnetlinux-gpu') {
         ws('workspace/nt-Installation-gpu') {
           init_git()
-          sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_gpu_virtualenv"
+          sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_gpu_virtualenv"
           sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_gpu_pip"
-          sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_gpu_docker"
+          //sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_gpu_docker"
           sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_gpu_source"
-        }
-      }
-    },
-    'PipTest: GPU': {
-      node('mxnetlinux-gpu') {
-        ws('workspace/nt-pipTest') {
-          init_git()
-          sh "ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_pip_test"
         }
       }
     },
