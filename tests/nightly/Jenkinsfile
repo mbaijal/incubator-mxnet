@@ -76,7 +76,7 @@ try {
       node('mxnetlinux-gpu') {
         ws('workspace/nt-Installation-cpu') {
           init_git()
-          sh "ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_virtualenv"
+          sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_virtualenv"
           sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_pip"
           //sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_docker"
           sh "sudo ci/build.py --platform ubuntu_base /work/runtime_functions.sh nightly_test_installation ubuntu_python_cpu_source"
