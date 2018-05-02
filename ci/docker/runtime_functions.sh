@@ -604,8 +604,8 @@ nightly_test_javascript() {
     sed -i -e 's/$SRC/$DST/g' ~/.emscripten
     #touch ~/.emscripten
     ./emcc
-    cd /work/mxnet/amalgamation
-    make clean libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
+    make -C /work/mxnet/amalgamation clean
+    make -C /work/mxnet/amalgamation libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
 }
 
 # Deploy
