@@ -21,7 +21,7 @@
 
 FROM ubuntu:16.04
 
-ARG USER_ID=1000
+ARG USER_ID=1001
 
 WORKDIR /work/deps
 
