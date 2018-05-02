@@ -562,9 +562,9 @@ nightly_test_compilation_warning() {
 
 nightly_test_installation() {
     set -ex
+    whoami
     chmod -R 777 ./tests/jenkins/run_test_installation_docs.sh
     source ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686; ${1}
-
 }
 
 nightly_test_pip_test() {
@@ -580,9 +580,6 @@ nightly_test_image_classification() {
 nightly_test_KVStore_singleNode() {
     chmod -R 777 tests/nightly/
     export PYTHONPATH=./python/
-    #cd /work/mxnet/python
-    #pip install -e .
-    #cd /work/mxnet
     python tests/nightly/test_kvstore.py
 }
 

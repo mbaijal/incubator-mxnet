@@ -86,24 +86,6 @@ try {
           //sh "ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_KVStore_singleNode"
         }
       }
-    },
-    'NCCL: GPU': {
-      node('mxnetlinux-gpu') {
-        ws('workspace/nt-KVStoreTest') {
-          init_git()
-          unpack_lib('gpu', mx_lib)
-          sh "ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_KVStore_singleNode"
-        }
-      }
-    },
-    'NCCL: GPU': {
-      node('mxnetlinux-gpu') {
-        ws('workspace/nt-KVStoreTest') {
-          init_git()
-          unpack_lib('gpu', mx_lib)
-          sh "ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_KVStore_singleNode"
-        }
-      }
     }
   }
 
