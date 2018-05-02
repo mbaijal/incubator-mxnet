@@ -21,7 +21,7 @@
 
 FROM nvidia/cuda:9.1-cudnn7-devel
 
-ARG USER_ID=1000
+ARG USER_ID=1001
 
 WORKDIR /work/deps
 
