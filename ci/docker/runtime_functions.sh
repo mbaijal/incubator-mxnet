@@ -602,7 +602,7 @@ nightly_test_javascript() {
     ./emcc && touch ~/.emscripten && ./emcc >/dev/null
     cd /work/mxnet/amalgamation
     export LLVM=/work/deps/emscripten-fastcomp/build/bin
-    make clean libmxnet_predict.js MIN=1 EMCC=/emscripten/emcc
+    make clean libmxnet_predict.js MIN=1
 }
 
 # Deploy
