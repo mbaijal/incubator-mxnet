@@ -595,14 +595,17 @@ nightly_test_amalgamation() {
 
 nightly_test_javascript() {
     set -ex
-    #SRC="LLVM_ROOT = os.path.expanduser(os.getenv('LLVM', '/usr/bin')) # directory"
-    #DST="LLVM_ROOT = os.path.expanduser('/work/deps/emscripten-fastcomp/build/bin')"
+    SRC="LLVM_ROOT = os.path.expanduser(os.getenv('LLVM', '/usr/bin')) # directory"
+    DST="LLVM_ROOT = os.path.expanduser('/work/deps/emscripten-fastcomp/build/bin')"
     #sed -i -e 's/$SRC/$DST/g' ~/.emscripten
-    cd /work/deps/emscripten
-    ./emcc && touch ~/.emscripten && ./emcc >/dev/null
-    cd /work/mxnet/amalgamation
     export LLVM=/work/deps/emscripten-fastcomp/build/bin
-    make clean libmxnet_predict.js MIN=1
+    cd /work/deps/emscripten
+    ./emcc
+    sed -i -e 's/$SRC/$DST/g' ~/.emscripten
+    #touch ~/.emscripten
+    ./emcc
+    cd /work/mxnet/amalgamation
+    make clean libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
 }
 
 # Deploy
