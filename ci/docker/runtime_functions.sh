@@ -600,9 +600,8 @@ nightly_test_javascript() {
     #sed -i -e 's/$SRC/$DST/g' ~/.emscripten
 
     export LLVM=/work/deps/emscripten-fastcomp/build/bin
-    /emscripten/emcc
     cd amalgamation
-    make clean libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
+    make clean libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten-fastcomp/build/bin
 }
 
 # Deploy
