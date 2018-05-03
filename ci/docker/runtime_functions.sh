@@ -545,7 +545,7 @@ test_ubuntu_cpu_python3() {
 # Functions that run the nightly Tests:
 nightly_test_rat_check() {
     set -ex
-    #chmod -R 777 tests/nightly/
+    chmod -R 777 tests/nightly/
     #chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
     #chmod 777 tests/nightly/apache_rat_license_check/rat-excludes
     ./tests/nightly/apache_rat_license_check/license_check.sh
@@ -562,7 +562,6 @@ nightly_test_compilation_warning() {
 
 nightly_test_installation() {
     set -ex
-    whoami
     chmod -R 777 ./tests/jenkins/run_test_installation_docs.sh
     source ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686; ${1}
 }
