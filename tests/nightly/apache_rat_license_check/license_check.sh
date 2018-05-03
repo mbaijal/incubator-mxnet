@@ -42,13 +42,14 @@ mvn -Dmaven.test.skip=true install #>/dev/null
 echo "build success, cd into target"
 cd apache-rat/target
 
-echo "run apache RAT check"
+echo "-------Run Apache RAT check on MXNet-------"
+
+#Command has been run twice, once for the logs and once to store in the variable to parse.
 java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet
 OUTPUT="$(java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet)"
 SOURCE="0 Unknown Licenses"
 
-echo "LETS PRINT THE OUTPUT NOW ---------------------------------------------------"
-echo $OUTPUT
+echo "-------Process The Output-------"
 
 if echo "$OUTPUT" | grep -q "$SOURCE"; then
     echo "matched";
@@ -58,8 +59,9 @@ fi
 
 
 
-if [[ "$OUTPUT" =~ "1 Unknown Licenses" ]]; then
-      echo "Good";
+if [[ "$OUTPUT" =~ "$SOURCE" ]]; then
+      echo "SUCCESS: There are no files with an Unknown License.";
 else
-      echo "Bad";
+      echo "ERROR: RAT Check detected files with unknown licenses. Please fix and run test again!";
+      exit 1
 fi
