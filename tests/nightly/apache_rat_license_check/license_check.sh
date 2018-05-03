@@ -37,10 +37,12 @@ echo "build success, cd into target"
 cd apache-rat/target
 
 #chmod -R 777 /home/ubuntu/workspace/NightlyPipeline_onSource/trunk
-#chmod -R 777 /work/mxnet/trunk/apache-rat-tasks
+chmod -R 777 /work/mxnet/trunk/apache-rat-tasks
 #rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
 #rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-bad-configurations.xml
 #rm -y /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+rm -y /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+
 
 echo "run apache RAT check"
 java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet
