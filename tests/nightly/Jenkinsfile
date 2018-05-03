@@ -64,6 +64,7 @@ try {
         }
       }
     },
+
     'CompilationWarnings: GPU': {
       node('mxnetlinux-gpu') {
         ws('workspace/nt-compilationTest') {
