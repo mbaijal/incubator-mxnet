@@ -43,8 +43,9 @@ echo "build success, cd into target"
 cd apache-rat/target
 
 echo "run apache RAT check"
+java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet
 OUTPUT="$(java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet)"
-SOURCE="1 Unknown Licenses"
+SOURCE="0 Unknown Licenses"
 
 echo "LETS PRINT THE OUTPUT NOW ---------------------------------------------------"
 echo $OUTPUT
