@@ -44,4 +44,9 @@ cd apache-rat/target
 
 echo "run apache RAT check"
 OUTPUT="$(java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet)"
-echo $OUTPUT
+
+
+if [[ $OUTPUT =~  *"1 Unknown Licenses"* ]]
+then
+   echo "It's there!"
+fi
