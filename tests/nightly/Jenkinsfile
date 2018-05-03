@@ -98,7 +98,7 @@ try {
       node('mxnetlinux-gpu') {
         ws('workspace/nt-pipTest') {
           init_git()
-          sh "ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_pip_test"
+          //sh "ci/build.py --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_pip_test"
         }
       }
     },
