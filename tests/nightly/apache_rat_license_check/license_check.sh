@@ -30,6 +30,12 @@ svn co http://svn.apache.org/repos/asf/creadur/rat/trunk/ #>/dev/null
 echo "cd into directory"
 cd trunk
 
+echo "Fix RAT bug"
+Remove='failonerror="false" errorproperty="antunit.failed"'
+SRC='failonerror="false" errorproperty="antunit.failed"'
+DST=""
+sed -i -e 's/$SRC/$DST/g' /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+
 echo "mvn install"
 mvn -Dmaven.test.skip=true install #>/dev/null
 
@@ -41,7 +47,7 @@ chmod -R 777 /work/mxnet/trunk/apache-rat-tasks
 #rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
 #rm -y /home/ubuntu/workspace/NightlyPipeline_onSource/trunk/apache-rat-tasks/src/test/resources/antunit/report-bad-configurations.xml
 #rm -y /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
-rm -y /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+/work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
 
 
 echo "run apache RAT check"
