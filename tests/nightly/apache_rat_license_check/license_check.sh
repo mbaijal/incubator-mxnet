@@ -33,8 +33,8 @@ cd trunk
 echo "Fix RAT bug"
 SRC='failonerror="false"'
 SRC2='errorproperty="antunit.failed"'
-sed -e s/$SRC//g -i /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
-sed -e s/$SRC2//g -i /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+#sed -e s/$SRC//g -i /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
+#sed -e s/$SRC2//g -i /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
 
 
 echo "mvn install"
