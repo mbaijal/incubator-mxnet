@@ -542,12 +542,12 @@ test_ubuntu_cpu_python3() {
     popd
 }
 
-# Nightly Tests
+# Functions that run the nightly Tests:
 nightly_test_rat_check() {
     set -ex
-    chmod -R 777 tests/nightly/
-    chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
-    chmod 777 tests/nightly/apache_rat_license_check/rat-excludes
+    #chmod -R 777 tests/nightly/
+    #chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
+    #chmod 777 tests/nightly/apache_rat_license_check/rat-excludes
     ./tests/nightly/apache_rat_license_check/license_check.sh
 }
 
@@ -565,11 +565,6 @@ nightly_test_installation() {
     whoami
     chmod -R 777 ./tests/jenkins/run_test_installation_docs.sh
     source ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686; ${1}
-}
-
-nightly_test_pip_test() {
-    chmod -R 777 tests/nightly/
-    ./tests/jenkins/run_test_pip_installations.sh
 }
 
 nightly_test_image_classification() {
@@ -606,7 +601,7 @@ nightly_test_javascript() {
     make -C /work/mxnet/amalgamation libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
 }
 
-# Deploy
+
 # Deploy
 
 deploy_docs() {
