@@ -29,7 +29,6 @@ RUN apt-get update && apt-get -y install sudo
 
 COPY install/ubuntu_adduser.sh /work/
 RUN /work/ubuntu_adduser.sh
-RUN usermod -aG sudo jenkins_slave
 
 COPY runtime_functions.sh /work/
 

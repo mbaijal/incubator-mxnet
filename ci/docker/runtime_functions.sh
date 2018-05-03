@@ -543,40 +543,44 @@ test_ubuntu_cpu_python3() {
 }
 
 # Functions that run the nightly Tests:
+
+#Runs Apache RAT Check on MXNet Source for License Headers
 nightly_test_rat_check() {
     set -ex
+    #Tests fails wihout changing permissions
     chmod -R 777 tests/nightly/
-    #chmod 777 tests/nightly/apache_rat_license_check/license_check.sh
-    #chmod 777 tests/nightly/apache_rat_license_check/rat-excludes
     ./tests/nightly/apache_rat_license_check/license_check.sh
 }
 
+#Checks MXNet for Compilation Warnings
 nightly_test_compilation_warning() {
     set -ex
     export PYTHONPATH=./python/
-    #export PATH=/usr/lib:$PATH
-    #export PATH=/usr/include/atlas:$PATH
     chmod -R 777 tests/nightly/
     ./tests/nightly/compilation_warnings/compilation_warnings.sh
 }
 
+#Checks the MXNet Installation Guide - currently checks pip, build from source and virtual env on cpu and gpu
 nightly_test_installation() {
     set -ex
     chmod -R 777 ./tests/jenkins
     source ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686; ${1}
 }
 
+#Runs a simple MNIST training example
 nightly_test_image_classification() {
     chmod -R 777 tests/nightly/
     ./tests/nightly/test_image_classification.sh
 }
 
+#Single Node KVStore Test
 nightly_test_KVStore_singleNode() {
     chmod -R 777 tests/nightly/
     export PYTHONPATH=./python/
     python tests/nightly/test_kvstore.py
 }
 
+#Tests Amalgamation Build with 5 different sets of flags
 nightly_test_amalgamation() {
     set -ex
     # Amalgamation can not be run with -j nproc
@@ -584,19 +588,14 @@ nightly_test_amalgamation() {
     make -C amalgamation/ ${1} ${2}
 }
 
+#Tests Amalgamation Build for Javascript
 nightly_test_javascript() {
     set -ex
-    SRC="LLVM_ROOT = os.path.expanduser(os.getenv('LLVM', '/usr/bin')) # directory"
-    DST="LLVM_ROOT = os.path.expanduser('/work/deps/emscripten-fastcomp/build/bin')"
-    #sed -i -e 's/$SRC/$DST/g' ~/.emscripten
     export LLVM=/work/deps/emscripten-fastcomp/build/bin
+    # This part is needed to run emcc correctly
     cd /work/deps/emscripten
     ./emcc
-    #sed -i -e 's/$SRC/$DST/g' ~/.emscripten
     touch ~/.emscripten
-    #./emcc
-    echo "did this succeed?"
-    #make -C /work/mxnet/amalgamation clean
     make -C /work/mxnet/amalgamation libmxnet_predict.js MIN=1 EMCC=/work/deps/emscripten/emcc
 }
 

@@ -17,6 +17,8 @@
 // under the License.
 
 
+//This is a Jenkinsfile for nightly tests. The format and some functions have been picked up from the top-level Jenkinsfile
+
 mx_lib = 'lib/libmxnet.so, lib/libmxnet.a, 3rdparty/dmlc-core/libdmlc.a, 3rdparty/nnvm/lib/libnnvm.a'
 
 // pack libraries for later use
@@ -54,6 +56,7 @@ def init_git() {
   }
 }
 
+
 try {
   stage('Build') {
     parallel 'GPU: CUDA9.1+cuDNN7': {
@@ -83,7 +86,7 @@ try {
           init_git()
           unpack_lib('gpu', mx_lib)
           //Note: This test is commented for now since it needs a p2/p3 instance
-          //sh "ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_KVStore_singleNode"
+          sh "ci/build.py --nvidiadocker --platform ubuntu_gpu /work/runtime_functions.sh nightly_test_KVStore_singleNode"
         }
       }
     }
