@@ -46,6 +46,7 @@ echo "run apache RAT check"
 OUTPUT="$(java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet)"
 SOURCE="1 Unknown Licenses"
 
+echo "LETS PRINT THE OUTPUT NOW ---------------------------------------------------"
 echo $OUTPUT
 
 if echo "$OUTPUT" | grep -q "$SOURCE"; then
