@@ -563,7 +563,7 @@ nightly_test_compilation_warning() {
 nightly_test_installation() {
     set -ex
     chmod -R 777 ./tests/jenkins/run_test_installation_docs.sh
-    source ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686; ${1}
+    tests/jenkins/run_as_user.sh `id -u` `id -un` `id -g` `id -un` source ./tests/jenkins/run_test_installation_docs.sh docs/install/index.md 1 1686; ${1}
 }
 
 nightly_test_image_classification() {
