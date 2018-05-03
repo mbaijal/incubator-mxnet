@@ -53,3 +53,11 @@ if echo "$OUTPUT" | grep -q "$SOURCE"; then
 else
     echo "no match";
 fi
+
+
+
+if [[ "$OUTPUT" =~ "1 Unknown Licenses" ]]; then
+      echo "Good";
+else
+      echo "Bad";
+fi
