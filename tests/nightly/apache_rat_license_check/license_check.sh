@@ -47,17 +47,9 @@ echo "-------Run Apache RAT check on MXNet-------"
 #Command has been run twice, once for the logs and once to store in the variable to parse.
 java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet
 OUTPUT="$(java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet)"
-SOURCE="0 Unknown Licenses"
+SOURCE="1 Unknown Licenses"
 
 echo "-------Process The Output-------"
-
-if echo "$OUTPUT" | grep -q "$SOURCE"; then
-    echo "matched";
-else
-    echo "no match";
-fi
-
-
 
 if [[ "$OUTPUT" =~ "$SOURCE" ]]; then
       echo "SUCCESS: There are no files with an Unknown License.";
