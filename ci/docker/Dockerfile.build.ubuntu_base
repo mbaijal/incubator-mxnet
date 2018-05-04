@@ -30,8 +30,8 @@ RUN apt-get update && apt-get -y install sudo
 COPY install/ubuntu_adduser.sh /work/
 RUN /work/ubuntu_adduser.sh
 
-COPY install/ubuntu_installbase.sh /work/
-RUN /work/ubuntu_installbase.sh
+COPY install/ubuntu_runas_sudo.sh /work/
+RUN /work/ubuntu_runas_sudo.sh
 
 COPY runtime_functions.sh /work/
 

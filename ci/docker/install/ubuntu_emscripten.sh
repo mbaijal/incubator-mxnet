@@ -20,7 +20,7 @@
 # build and install are separated so changes to build don't invalidate
 # the whole docker cache for the image
 
-#The script has been copied from a dockerfile that existed on previous MXNet versions (0.11)
+#The script has been copied as is from a dockerfile that existed on previous MXNet versions (0.11)
 #Written By: Ly
 
 set -ex

@@ -17,12 +17,14 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# build and install are separated so changes to build don't invalidate
-# the whole docker cache for the image
+#Install steps for the nightly tests
 
 set -ex
 apt-get update
+
+#Install for Compilation warning Nightly Test
 add-apt-repository ppa:ubuntu-toolchain-r/test
 apt-get -y install time g++-5
-apt-get install maven -y #>/dev/null
-apt-get install subversion -y
+
+# Install for RAT License Check Nightly Test
+apt-get install -y subversion maven -y #>/dev/null

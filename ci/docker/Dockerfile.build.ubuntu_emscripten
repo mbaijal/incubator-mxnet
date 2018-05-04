@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-# Dockerfile to build and run MXNet on Ubuntu 16.04 for CPU
+# Dockerfile to run the MXNet JS amalgamation test. Builds on top of the ubuntu_cpu dockerfile.
 
 FROM ubuntu:16.04
 
