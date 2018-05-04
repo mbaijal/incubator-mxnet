@@ -59,7 +59,7 @@ def init_git() {
 
 try {
   stage('Build') {
-    'GPU: CUDA9.1+cuDNN7': {
+    parallel 'GPU: CUDA9.1+cuDNN7': {
       node('mxnetlinux-cpu') {
         ws('workspace/build-gpu') {
           init_git()
