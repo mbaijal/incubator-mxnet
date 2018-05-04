@@ -95,8 +95,8 @@ try {
   } catch (err) {
         currentBuild.result = "FAILURE"
         mail body: "The latest build of MXNet Nightly Tests on Source has failed. Please check here:  ${env.BUILD_URL}" ,
-        from: '${EMAIL},
-        replyTo: '${EMAIL},
+        from: '${EMAIL}',
+        replyTo: '${EMAIL}',
         subject: '[MXNet CI] The Nightly Test Pipeline on Source failed',
         to: 'meghnabaijal2017@gmail.com'
 
