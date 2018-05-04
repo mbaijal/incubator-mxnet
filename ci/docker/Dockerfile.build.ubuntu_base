@@ -30,6 +30,9 @@ RUN apt-get update && apt-get -y install sudo
 COPY install/ubuntu_adduser.sh /work/
 RUN /work/ubuntu_adduser.sh
 
+COPY install/ubuntu_installbase.sh /work/
+RUN /work/ubuntu_installbase.sh
+
 COPY runtime_functions.sh /work/
 
 WORKDIR /work/mxnet
