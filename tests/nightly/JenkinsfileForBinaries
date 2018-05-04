@@ -59,7 +59,7 @@ def init_git() {
 
 try {
   stage('Build') {
-    parallel 'GPU: CUDA9.1+cuDNN7': {
+    'GPU: CUDA9.1+cuDNN7': {
       node('mxnetlinux-cpu') {
         ws('workspace/build-gpu') {
           init_git()
@@ -93,5 +93,12 @@ try {
   }
 
   } catch (err) {
+        currentBuild.result = "FAILURE"
+        mail body: "The latest build of MXNet Nightly Tests has failed. Please check here:  ${env.BUILD_URL}" ,
+        from: 'mbaijal@amazon.com',
+        replyTo: 'mbaijal@amazon.com',
+        subject: '[MXNet CI] The Nightly Test Pipeline failed',
+        to: 'mbaijal@amazon.com'
+
         throw err
-  }
+    }

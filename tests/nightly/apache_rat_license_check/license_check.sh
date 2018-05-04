@@ -18,11 +18,7 @@
 # under the License.
 
 
-#echo "install maven"
-#sudo apt-get install maven -y #>/dev/null
-
-#echo "install svn"
-#sudo apt-get install subversion -y #>/dev/null
+#mvn and svn are installed in the docker container via the nghtly test script
 
 echo "download RAT"
 svn co http://svn.apache.org/repos/asf/creadur/rat/trunk/ #>/dev/null
@@ -30,24 +26,20 @@ svn co http://svn.apache.org/repos/asf/creadur/rat/trunk/ #>/dev/null
 echo "cd into directory"
 cd trunk
 
-echo "Fix RAT bug"
-SRC='failonerror="false"'
-SRC2='errorproperty="antunit.failed"'
-#sed -e s/$SRC//g -i /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
-#sed -e s/$SRC2//g -i /work/mxnet/trunk/apache-rat-tasks/src/test/resources/antunit/report-normal-operation.xml
-
 echo "mvn install"
 mvn -Dmaven.test.skip=true install #>/dev/null
 
 echo "build success, cd into target"
 cd apache-rat/target
 
+
 echo "-------Run Apache RAT check on MXNet-------"
 
 #Command has been run twice, once for the logs and once to store in the variable to parse.
 java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet
 OUTPUT="$(java -jar apache-rat-0.13-SNAPSHOT.jar -E /work/mxnet/tests/nightly/apache_rat_license_check/rat-excludes -d /work/mxnet)"
-SOURCE="1 Unknown Licenses"
+SOURCE="0 Unknown Licenses"
+
 
 echo "-------Process The Output-------"
 
